@@ -12,7 +12,7 @@ The host should have Virtualization Technology (VT) enabled.
 Role Variables
 --------------
 
-`libvirt_host_networks` is a list of pools to define and start. Each item
+`libvirt_host_pools` is a list of pools to define and start. Each item
 should be a dict containing the following items:
 - `name` The name of the pool.
 - `type` The type of the pool, currently only `dir` is supported.
@@ -41,7 +41,7 @@ Example Playbook
     - name: Ensure that Libvirt is configured
       hosts: all
       roles:
-        - role: libvirt-host
+        - role: stackhpc.libvirt-host
           libvirt_host_pools:
             - name: my-pool
               type: dir
