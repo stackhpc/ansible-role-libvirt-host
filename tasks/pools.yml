@@ -6,6 +6,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode|int(base=8) }}"
     state: directory
+  when: item.type == "dir"
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
