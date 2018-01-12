@@ -27,7 +27,7 @@ should be a dict containing the following items:
 - `name` The name of the network.
 - `mode` The forwarding mode of the network, currently only `bridge` is
   supported.
-- bridge` The name of the bridge interface for this network.
+- `bridge` The name of the bridge interface for this network.
 
 Dependencies
 ------------
