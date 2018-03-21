@@ -17,3 +17,8 @@ libvirt_host_pools: []
 # supported.
 # bridge: The name of the bridge interface for this network.
 libvirt_host_networks: []
+
+# Whether to require that Intel Virtualisation Technology (VT) is enabled in
+# order to run this role. While this provides better VM performance, it may not
+# be available in certain environments.
+libvirt_host_require_vt: true
