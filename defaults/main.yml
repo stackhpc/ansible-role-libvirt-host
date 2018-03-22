@@ -22,3 +22,6 @@ libvirt_host_networks: []
 # order to run this role. While this provides better VM performance, it may not
 # be available in certain environments.
 libvirt_host_require_vt: true
+
+# List of architectures for which to install QEMU system emulators, e.g. x86.
+libvirt_host_qemu_emulators: "{{ [] if libvirt_host_require_vt | bool else ['x86'] }}"

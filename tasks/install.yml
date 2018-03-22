@@ -11,6 +11,23 @@
     - qemu-kvm
   become: True
 
+# NOTE: QEMU emulators are available in EPEL.
+- name: Ensure the EPEL repository is enabled
+  yum:
+    name: epel-release
+    state: installed
+  when: libvirt_host_qemu_emulators | length > 0
+  become: True
+
+- name: Ensure QEMU emulator packages are installed
+  yum:
+    name: "{{ package }}"
+    state: installed
+  with_items: "{{ libvirt_host_qemu_emulators }}"
+  become: True
+  vars:
+    package: "qemu-system-{{ item }}"
+
 - name: Ensure the libvirt daemon is started and enabled
   service:
     name: libvirtd
