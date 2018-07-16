@@ -57,7 +57,7 @@ Example Playbook
               type: dir
               capacity: 1024
               path: /path/to/pool
-              mode: 0755
+              mode: "0755"
               owner: my-user
               group: my-group
           libvirt_host_networks:
