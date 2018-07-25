@@ -18,7 +18,8 @@ should be a dict containing the following items:
 - `type` The type of the pool, currently only `dir` is supported.
 - `capacity`  The capacity, in bytes, of the pool.
 - `path` The absolute path to the pool's backing directory.
-- `mode` The access mode of the pool.
+- `mode` The access mode of the pool. N.B.: This should be specified as an
+  integer **without** a leading zero; for example: `mode: 755`.
 - `owner` The owner of the pool.
 - `group` The group of the pool.
 
@@ -47,7 +48,7 @@ Example Playbook
               type: dir
               capacity: 1024
               path: /path/to/pool
-              mode: 0755
+              mode: 755
               owner: my-user
               group: my-group
           libvirt_host_networks:
