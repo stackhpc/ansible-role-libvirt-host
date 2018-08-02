@@ -5,9 +5,24 @@
   failed_when: False
   register: result
 
+- name: Set a fact about whether Virtualization Technology (VT) is enabled
+  set_fact:
+    libvirt_host_vt_enabled: "{{ result.rc == 0 }}"
+
+- name: Notify if Virtualization Technology (VT) is disabled
+  debug:
+    msg: >
+      Virtualization Technology (VT) is currently disabled. Please enable VT
+      before running this role again.
+  when:
+    - not libvirt_host_require_vt | bool
+    - not libvirt_host_vt_enabled
+
 - name: Fail if Virtualization Technology (VT) is disabled
   fail:
     msg: >
       Virtualization Technology (VT) is currently disabled. Please enable VT
       before running this role again.
-  when: result.rc != 0
+  when:
+    - libvirt_host_require_vt | bool
+    - not libvirt_host_vt_enabled

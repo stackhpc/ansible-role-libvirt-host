@@ -30,6 +30,16 @@ should be a dict containing the following items:
   supported.
 - `bridge` The name of the bridge interface for this network.
 
+`libvirt_host_require_vt`is whether to require that Intel Virtualisation
+Technology (VT) is enabled in order to run this role. While this provides
+better VM performance, it may not be available in certain environments. The
+default value is `true`.
+
+`libvirt_host_qemu_emulators`: List of architectures for which to install QEMU
+system emulators, e.g.  `x86`. The default value is `['x86']` if
+`libvirt_host_require_vt` is `false`, otherwise the default value is an empty
+list.
+
 Dependencies
 ------------
 

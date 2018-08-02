@@ -17,3 +17,11 @@ libvirt_host_pools: []
 # supported.
 # bridge: The name of the bridge interface for this network.
 libvirt_host_networks: []
+
+# Whether to require that Intel Virtualisation Technology (VT) is enabled in
+# order to run this role. While this provides better VM performance, it may not
+# be available in certain environments.
+libvirt_host_require_vt: true
+
+# List of architectures for which to install QEMU system emulators, e.g. x86.
+libvirt_host_qemu_emulators: "{{ [] if libvirt_host_require_vt | bool else ['x86'] }}"
