@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  role_name: libvirt-host
+  #role_name: libvirt_host
   author: Mark Goddard
   description: >
     Role to install and configure a host as a Libvirt/KVM hypervisor
