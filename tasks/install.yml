@@ -20,9 +20,10 @@
   yum:
     name: epel-release
     state: installed
-  when: libvirt_host_qemu_emulators | length > 0
   become: True
-  when: ansible_os_family == "RedHat"
+  when:
+    - ansible_os_family == "RedHat"
+    - libvirt_host_qemu_emulators | length > 0
 
 - name: Ensure QEMU emulator packages are installed
   package:
