@@ -1,0 +1,8 @@
+---
+# List of libvirt package dependencies.
+libvirt_host_libvirt_packages:
+  - libvirt
+  - libvirt-daemon-kvm
+  - libvirt-python
+  - python-lxml
+  - qemu-kvm
