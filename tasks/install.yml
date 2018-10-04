@@ -37,6 +37,6 @@
 - name: Ensure the libvirt daemon is started and enabled
   service:
     name: libvirtd
-    state: running
+    state: started
     enabled: yes
   become: True
