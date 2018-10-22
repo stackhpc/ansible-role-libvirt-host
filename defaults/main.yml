@@ -25,3 +25,7 @@ libvirt_host_require_vt: true
 
 # List of architectures for which to install QEMU system emulators, e.g. x86.
 libvirt_host_qemu_emulators: "{{ [] if libvirt_host_require_vt | bool else ['x86'] }}"
+
+# Whether or not to enable UEFI support. In some cases this requires installing
+# extra packages.
+libvirt_host_enable_efi_support: false

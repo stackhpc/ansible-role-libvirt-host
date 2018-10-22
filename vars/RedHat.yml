@@ -1,8 +1,34 @@
 ---
 # List of libvirt package dependencies.
-libvirt_host_libvirt_packages:
+libvirt_host_libvirt_packages_default:
   - libvirt
   - libvirt-daemon-kvm
   - libvirt-python
   - python-lxml
   - qemu-kvm
+
+# Packages that are only necessary if you require EFI support
+libvirt_host_packages_efi:
+  - edk2.git-ovmf-x64 # Official OVMF package doesn't boot (CentOS 7.5)
+  - qemu-kvm-ev # Need smm support for secure boot
+
+# List of all packages to install
+libvirt_host_libvirt_packages: >
+  {{ libvirt_host_libvirt_packages_default +
+     (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
+  }}
+
+libvirt_host_custom_yum_repos_efi:
+  # Add custom repository as OVMF package seems to be broken
+  - name: qemu-firmware-jenkins
+    description: upstream OVMF firmware images
+    baseurl: https://www.kraxel.org/repos/jenkins/
+    gpgcheck: no
+  # Need an updated version of qemu with smm support
+  - name: centos-qemu-ev
+    description: CentOS-$releasever - QEMU EV
+    baseurl: http://mirror.centos.org/$contentdir/$releasever/virt/$basearch/kvm-common/
+    gpgcheck: yes
+
+libvirt_host_custom_yum_repos: "{{ libvirt_host_custom_yum_repos_efi if libvirt_host_enable_efi_support else [] | unique }}"
+
