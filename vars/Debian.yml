@@ -1,7 +1,17 @@
 ---
 # List of libvirt package dependencies.
-libvirt_host_libvirt_packages:
+libvirt_host_libvirt_packages_default:
   - libvirt-bin
   - qemu-kvm
   - python-libvirt
   - python-lxml
+
+# Packages that are only necessary if you require EFI support
+libvirt_host_packages_efi:
+  - ovmf
+
+# List of all packages to install
+libvirt_host_libvirt_packages: >
+  {{ libvirt_host_libvirt_packages_default +
+     (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
+  }}
