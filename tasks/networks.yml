@@ -4,7 +4,7 @@
     name: "{{ item.name }}"
     command: define
     xml: "{{ item.xml | default(lookup('template', 'network.xml.j2')) }}"
-    uri: "{{ libvirt_host_uri }}"
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
@@ -12,7 +12,7 @@
   virt_net:
     name: "{{ item.name }}"
     state: active
-    uri: "{{ libvirt_host_uri }}"
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_networks }}"
   become: True
 
@@ -20,6 +20,6 @@
   virt_net:
     name: "{{ item.name }}"
     autostart: yes
-    uri: "{{ libvirt_host_uri }}"
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_networks }}"
   become: True

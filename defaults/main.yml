@@ -60,6 +60,4 @@ libvirt_host_libvirtd_args: >-
 libvirt_host_uri: >-
   {%- if libvirt_host_socket_dir -%}
   qemu+unix:///system?socket={{ libvirt_host_socket_dir }}/libvirt-sock
-  {%- else %}
-  qemu:///system
   {%- endif %}
