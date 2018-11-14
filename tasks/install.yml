@@ -82,3 +82,6 @@
     name: libvirtd
     enabled: yes
   become: True
+
+- name: Flush handlers
+  meta: flush_handlers
