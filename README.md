@@ -41,6 +41,23 @@ system emulators, e.g.  `x86`. The default value is `['x86']` if
 list.
 `libvirt_vm_enable_efi_support`: Whether to enable EFI support. This defaults 
 to false as extra packages need to be installed.
+`libvirt_host_var_prefix`: This determines The directory under /var/run that libvirt
+uses to store state, e.g unix domain sockets, as well as the default name of the 
+PID file. Override this if you have a conflict with the default socket e.g it 
+could be in use by the nova_libvirt container. Defaults to "".
+`libvirt_host_socket_dir`: Where the libvirtd socket is created. Defaults to
+`/var/run/{{ libvirt_host_var_prefix }}` if `libvirt_host_var_prefix` is set,
+otherwise "".
+`libvirt_host_pid_path`: Path to PID file which prevents mulitple instances of
+the daemon from spawning. Defaults to `/var/run/{{ libvirt_host_var_prefix }}.pid` 
+if `libvirt_host_var_prefix` is set, otherwise "".
+`libvirt_host_libvirtd_args`: Command line arguments passed to libvirtd by the
+init system when libvirtd is started - quotes will be added
+`libvirt_host_uri`: The libvirt connnection URI. Defaults to 
+`qemu+unix:///system?socket={{ libvirt_host_socket_dir }}/libvirt-sock` if
+`libvirt_host_var_prefix` is set, otherwise "". If set to a falsey value,
+an explicit connection URI will not be set when calling virsh or any of
+the virt_ ansible modules.
 
 Dependencies
 ------------
