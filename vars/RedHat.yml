@@ -32,3 +32,13 @@ libvirt_host_custom_yum_repos_efi:
 
 libvirt_host_custom_yum_repos: "{{ libvirt_host_custom_yum_repos_efi if libvirt_host_enable_efi_support else [] | unique }}"
 
+# These are passed to the lineinfile module to customize configuration files
+libvirt_host_lineinfile_extra_rules:
+  - args:
+      path: /etc/sysconfig/libvirtd
+      insertafter: '^#LIBVIRTD_ARGS='
+      regexp: '^LIBVIRTD_ARGS='
+      line: LIBVIRTD_ARGS="{{ libvirt_host_libvirtd_args }}"
+    condition: "{{ libvirt_host_libvirtd_args != '' }}" 
+
+

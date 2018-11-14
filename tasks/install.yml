@@ -55,6 +55,7 @@
     line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
   become: true
   when: libvirt_host_socket_dir != ""
+  notify: restart libvirt
 
 - name: Create directory for libvirt socket
   file:
@@ -66,18 +67,19 @@
   become: true
   when: libvirt_host_socket_dir != ""
 
-- name: Set command line arguments for libvirtd
-  lineinfile:
-    path: /etc/sysconfig/libvirtd
-    insertafter: '^#LIBVIRTD_ARGS='
-    regexp: '^LIBVIRTD_ARGS='
-    line: LIBVIRTD_ARGS="{{ libvirt_host_libvirtd_args }}"
+- name: Process lineinfile rules
+  lineinfile: "{{ rule.args }}"
   become: true
-  when: libvirt_host_libvirtd_args != ""
+  loop: "{{ libvirt_host_lineinfile_extra_rules | default([]) }}"
+  loop_control:
+    loop_var: rule
+  when: rule.condition
+  notify:
+    - restart libvirt
+    - enable libvirt
 
 - name: Ensure the libvirt daemon is started and enabled
   service:
     name: libvirtd
-    state: started
     enabled: yes
   become: True
