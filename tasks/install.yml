@@ -77,7 +77,7 @@
   notify:
     - restart libvirt
 
-- name: Ensure the libvirt daemon is started and enabled
+- name: Ensure the libvirt daemon is enabled
   service:
     name: libvirtd
     enabled: yes
