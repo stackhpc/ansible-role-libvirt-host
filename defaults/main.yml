@@ -34,7 +34,7 @@ libvirt_host_enable_efi_support: false
 # e.g unix domain sockets, as well as the default name of the PID file. Override
 # this if you have a conflict with the default socket e.g it could be in use by the
 # nova_libvirt container
-libvirt_host_var_prefix: libvirt-tenks
+libvirt_host_var_prefix: ""
 
 # Where the Unix Domain sockets are stored
 libvirt_host_socket_dir: >-
