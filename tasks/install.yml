@@ -76,7 +76,6 @@
   when: rule.condition
   notify:
     - restart libvirt
-    - enable libvirt
 
 - name: Ensure the libvirt daemon is started and enabled
   service:
