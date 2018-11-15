@@ -22,7 +22,7 @@ libvirt_host_packages_efi:
 
 # List of all packages to install
 libvirt_host_libvirt_packages: >
-  {{ libvirt_host_libvirt_packages_default + [libvirt_host_libvirt_packages_libvirt_daemon] +
+  {{ libvirt_host_libvirt_packages_common + [libvirt_host_libvirt_packages_libvirt_daemon] +
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}
 
