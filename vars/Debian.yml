@@ -7,8 +7,10 @@ libvirt_host_libvirt_packages_common:
 
 # Package that contains the libvirt daemon
 libvirt_host_libvirt_packages_libvirt_daemon: >-
-  {%- if (ansible_distribution == "Ubuntu" and ansible_major_version is version_compare('16.04', '<')) or
-  (ansible_distribution == "Debian" and ansible_major_version is version_compare('8', '<')) -%}
+  {%- if (ansible_distribution == "Ubuntu" and
+          ansible_distribution_major_version is version_compare('16.04', '<')) or
+         (ansible_distribution == "Debian" and
+          ansible_distribution_major_version is version_compare('8', '<')) -%}
   libvirt-bin
   {%- else -%}
   libvirt-daemon-system

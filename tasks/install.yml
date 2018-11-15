@@ -1,13 +1,4 @@
 ---
-
-- name: gather os specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
-    - "{{ ansible_distribution }}.yml"
-    - "{{ ansible_os_family }}.yml"
-  tags: vars
-
 - name: Install custom yum repositories
   # Although argument splatting is marked as deprecated:
   #
@@ -28,28 +19,6 @@
   with_items: "{{ libvirt_host_libvirt_packages }}"
   become: True
 
-- name: Determine path to libvirt environment file
-  # On Debian >= 9 and Ubuntu >= xenial the libvirt-bin package has been
-  # split into libvirt-daemon-system and libvirt-clients. They also seem
-  # to have changed to location to enviroment file. To prevent the need
-  # to hard code paths for every major version we determine these
-  # dynamically. This must be done after installing the package.
-  set_fact:
-    libvirt_host_lineinfile_extra_rules:
-      - args:
-          path: "{{ libvirt_env_path }}"
-          insertafter: '^#libvirtd_opts='
-          regexp: '^libvirtd_opts='
-          line: libvirtd_opts="{{ libvirt_host_libvirtd_args }}"
-        condition: "{{ libvirt_host_libvirtd_args != '' }}"
-  with_first_found:
-    - /etc/default/libvirt-bin
-    - /etc/default/libvirtd
-  loop_control:
-    loop_var: libvirt_env_path
-  tags: vars
-  when: ansible_os_family == "Debian"
-
 # NOTE: QEMU emulators are available in EPEL.
 - name: Ensure the EPEL repository is enabled
   yum:
@@ -68,42 +37,3 @@
   become: True
   vars:
     package: "qemu-system-{{ item }}"
-
-- name: Set socket directory in libvirtd.conf
-  lineinfile:
-    path: /etc/libvirt/libvirtd.conf
-    insertafter: '^#unix_sock_dir ='
-    regexp: '^unix_sock_dir ='
-    line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
-  become: true
-  when: libvirt_host_socket_dir != ""
-  notify: restart libvirt
-
-- name: Create directory for libvirt socket
-  file:
-    state: directory
-    path: "{{ libvirt_host_socket_dir }}"
-    owner: root
-    group: root
-    mode: 0755
-  become: true
-  when: libvirt_host_socket_dir != ""
-
-- name: Process lineinfile rules
-  lineinfile: "{{ rule.args }}"
-  become: true
-  loop: "{{ libvirt_host_lineinfile_extra_rules | default([]) }}"
-  loop_control:
-    loop_var: rule
-  when: rule.condition
-  notify:
-    - restart libvirt
-
-- name: Ensure the libvirt daemon is enabled
-  service:
-    name: libvirtd
-    enabled: yes
-  become: True
-
-- name: Flush handlers
-  meta: flush_handlers
