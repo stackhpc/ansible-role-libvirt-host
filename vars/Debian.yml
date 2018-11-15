@@ -1,10 +1,18 @@
 ---
-# List of libvirt package dependencies.
-libvirt_host_libvirt_packages_default:
-  - libvirt-bin
+# List of package dependencies common to all Debian distributions
+libvirt_host_libvirt_packages_common:
   - qemu-kvm
   - python-libvirt
   - python-lxml
+
+# Package that contains the libvirt daemon
+libvirt_host_libvirt_packages_libvirt_daemon: >-
+  {%- if (ansible_distribution == "Ubuntu" and ansible_major_version is version_compare('16.04', '<')) or
+  (ansible_distribution == "Debian" and ansible_major_version is version_compare('8', '<')) -%}
+  libvirt-bin
+  {%- else -%}
+  libvirt-daemon-system
+  {%- endif -%}
 
 # Packages that are only necessary if you require EFI support
 libvirt_host_packages_efi:
@@ -12,15 +20,9 @@ libvirt_host_packages_efi:
 
 # List of all packages to install
 libvirt_host_libvirt_packages: >
-  {{ libvirt_host_libvirt_packages_default +
+  {{ libvirt_host_libvirt_packages_default + [libvirt_host_libvirt_packages_libvirt_daemon] +
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}
 
 # These are passed to the lineinfile module to customize configuration files
-libvirt_host_lineinfile_extra_rules:
-  - args:
-      path: /etc/default/libvirt-bin
-      insertafter: '^#libvirtd_opts='
-      regexp: '^libvirtd_opts='
-      line: libvirtd_opts="{{ libvirt_host_libvirtd_args }}"
-    condition: "{{ libvirt_host_libvirtd_args != '' }}"
+libvirt_host_lineinfile_extra_rules: []

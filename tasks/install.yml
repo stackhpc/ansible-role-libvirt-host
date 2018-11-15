@@ -28,6 +28,28 @@
   with_items: "{{ libvirt_host_libvirt_packages }}"
   become: True
 
+- name: Determine path to libvirt environment file
+  # On Debian >= 9 and Ubuntu >= xenial the libvirt-bin package has been
+  # split into libvirt-daemon-system and libvirt-clients. They also seem
+  # to have changed to location to enviroment file. To prevent the need
+  # to hard code paths for every major version we determine these
+  # dynamically. This must be done after installing the package.
+  set_fact:
+    libvirt_host_lineinfile_extra_rules:
+      - args:
+          path: "{{ libvirt_env_path }}"
+          insertafter: '^#libvirtd_opts='
+          regexp: '^libvirtd_opts='
+          line: libvirtd_opts="{{ libvirt_host_libvirtd_args }}"
+        condition: "{{ libvirt_host_libvirtd_args != '' }}"
+  with_first_found:
+    - /etc/default/libvirt-bin
+    - /etc/default/libvirtd
+  loop_control:
+    loop_var: libvirt_env_path
+  tags: vars
+  when: ansible_os_family == "Debian"
+
 # NOTE: QEMU emulators are available in EPEL.
 - name: Ensure the EPEL repository is enabled
   yum:
