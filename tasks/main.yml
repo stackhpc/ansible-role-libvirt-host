@@ -2,7 +2,7 @@
 - include: prelude.yml
 - include: validate.yml
 - include: install.yml
-- name: Run post-install stage 
+- name: Run post-install stage
   include: "{{ post_install_path }}"
   with_first_found:
     - files:

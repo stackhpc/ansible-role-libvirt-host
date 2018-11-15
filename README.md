@@ -53,9 +53,10 @@ could be in use by the nova_libvirt container. Defaults to `""`.
 `/var/run/{{ libvirt_host_var_prefix }}` if `libvirt_host_var_prefix` is set,
 otherwise `""`.
 
-`libvirt_host_pid_path`: Path to PID file which prevents mulitple instances of
+`libvirt_host_pid_path`: Path to PID file which prevents multiple instances of
 the daemon from spawning. Defaults to `/var/run/{{ libvirt_host_var_prefix }}.pid` 
 if `libvirt_host_var_prefix` is set, otherwise `""`.
+
 `libvirt_host_libvirtd_args`: Command line arguments passed to libvirtd by the
 init system when libvirtd is started - quotes will be added
 
