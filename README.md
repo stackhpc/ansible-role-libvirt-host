@@ -41,7 +41,7 @@ system emulators, e.g.  `x86`. The default value is `['x86']` if
 `libvirt_host_require_vt` is `false`, otherwise the default value is an empty
 list.
 
-`libvirt_vm_enable_efi_support`: Whether to enable EFI support. This defaults 
+`libvirt_host_enable_efi_support`: Whether to enable EFI support. This defaults 
 to false as extra packages need to be installed.
 
 `libvirt_host_var_prefix`: This determines The directory under /var/run that libvirt
