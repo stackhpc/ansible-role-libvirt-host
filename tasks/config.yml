@@ -31,11 +31,12 @@
   notify:
     - restart libvirt
 
-- name: Ensure the libvirt daemon is enabled
-  service:
-    name: libvirtd
-    enabled: yes
-  become: True
-
 - name: Flush handlers
   meta: flush_handlers
+
+- name: Ensure the libvirt daemon is started and enabled
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+  become: True
