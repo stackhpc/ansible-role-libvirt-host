@@ -1,5 +1,16 @@
 ---
+- include: prelude.yml
 - include: validate.yml
 - include: install.yml
+- name: Run post-install stage
+  include: "{{ post_install_path }}"
+  with_first_found:
+    - files:
+        - post-install-{{ ansible_distribution }}.yml
+        - post-install-{{ ansible_os_family }}.yml
+      skip: true
+  loop_control:
+    loop_var: post_install_path
+- include: config.yml
 - include: pools.yml
 - include: networks.yml

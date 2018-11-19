@@ -1,13 +1,4 @@
 ---
-
-- name: gather os specific variables
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
-    - "{{ ansible_distribution }}.yml"
-    - "{{ ansible_os_family }}.yml"
-  tags: vars
-
 - name: Install custom yum repositories
   # Although argument splatting is marked as deprecated:
   #
@@ -46,10 +37,3 @@
   become: True
   vars:
     package: "qemu-system-{{ item }}"
-
-- name: Ensure the libvirt daemon is started and enabled
-  service:
-    name: libvirtd
-    state: started
-    enabled: yes
-  become: True

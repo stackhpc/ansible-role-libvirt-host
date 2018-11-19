@@ -29,3 +29,35 @@ libvirt_host_qemu_emulators: "{{ [] if libvirt_host_require_vt | bool else ['x86
 # Whether or not to enable UEFI support. In some cases this requires installing
 # extra packages.
 libvirt_host_enable_efi_support: false
+
+# This determines The directory under /var/run that libvirt uses to store state,
+# e.g unix domain sockets, as well as the default name of the PID file. Override
+# this if you have a conflict with the default socket e.g it could be in use by the
+# nova_libvirt container
+libvirt_host_var_prefix: ""
+
+# Where the Unix Domain sockets are stored
+libvirt_host_socket_dir: >-
+  {%- if libvirt_host_var_prefix -%}
+  /var/run/{{ libvirt_host_var_prefix }}
+  {%- endif -%}
+
+# Path to PID file which prevents mulitple instances of the daemon from
+# spawning
+libvirt_host_pid_path: >-
+  {%- if libvirt_host_var_prefix -%}
+  /var/run/{{ libvirt_host_var_prefix }}.pid
+  {%- endif -%}
+
+# Command line arguments passed to libvirtd by the init system when
+# libvirtd is started - quotes will be added
+libvirt_host_libvirtd_args: >-
+  {%- if libvirt_host_pid_path -%}
+  -p {{ libvirt_host_pid_path }}
+  {%- endif %}
+
+# The libvirt connnection URI
+libvirt_host_uri: >-
+  {%- if libvirt_host_socket_dir -%}
+  qemu+unix:///system?socket={{ libvirt_host_socket_dir }}/libvirt-sock
+  {%- endif %}

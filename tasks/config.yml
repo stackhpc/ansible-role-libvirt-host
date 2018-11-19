@@ -1,0 +1,42 @@
+---
+# Configure services - runs after the install stage
+
+- name: Set socket directory in libvirtd.conf
+  lineinfile:
+    path: /etc/libvirt/libvirtd.conf
+    insertafter: '^#unix_sock_dir ='
+    regexp: '^unix_sock_dir ='
+    line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
+  become: true
+  when: libvirt_host_socket_dir != ""
+  notify: restart libvirt
+
+- name: Create directory for libvirt socket
+  file:
+    state: directory
+    path: "{{ libvirt_host_socket_dir }}"
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+  when: libvirt_host_socket_dir != ""
+
+- name: Process lineinfile rules
+  lineinfile: "{{ rule.args }}"
+  become: true
+  loop: "{{ libvirt_host_lineinfile_extra_rules | default([]) }}"
+  loop_control:
+    loop_var: rule
+  when: rule.condition
+  notify:
+    - restart libvirt
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure the libvirt daemon is started and enabled
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+  become: True
