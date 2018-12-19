@@ -8,7 +8,7 @@
     regexp: '^unix_sock_dir ='
     line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
   become: true
-  when: libvirt_host_socket_dir != ""
+  when: libvirt_host_socket_dir | length > 0
   notify: restart libvirt
 
 - name: Create directory for libvirt socket
@@ -19,7 +19,7 @@
     group: root
     mode: 0755
   become: true
-  when: libvirt_host_socket_dir != ""
+  when: libvirt_host_socket_dir | length > 0
 
 - name: Process lineinfile rules
   lineinfile: "{{ rule.args }}"
