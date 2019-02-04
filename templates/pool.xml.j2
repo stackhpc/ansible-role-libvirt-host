@@ -1,6 +1,8 @@
 <pool type='{{ item.type }}'>
   <name>{{ item.name }}</name>
+  {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
+  {% endif %}
   <target>
     <path>{{ item.path | default('placeholder_value') }}</path>
   </target>
