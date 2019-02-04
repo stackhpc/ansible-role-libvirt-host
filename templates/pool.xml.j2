@@ -1,6 +1,6 @@
 <pool type='{{ item.type }}'>
   <name>{{ item.name }}</name>
-  {% if item | selectattr('capacity', 'defined') | list %}
+  {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
   {% endif %}
   <target>
