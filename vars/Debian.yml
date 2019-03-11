@@ -4,6 +4,7 @@ libvirt_host_libvirt_packages_common:
   - qemu-kvm
   - python-libvirt
   - python-lxml
+  - pkg-config
 
 # Package that contains the libvirt daemon
 libvirt_host_libvirt_packages_libvirt_daemon: >-
