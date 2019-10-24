@@ -3,8 +3,8 @@
 libvirt_host_libvirt_packages_default:
   - libvirt
   - libvirt-daemon-kvm
-  - libvirt-python
-  - python-lxml
+  - "{{ 'python3-libvirt' if ansible_distribution_major_version|int >=8 else 'libvirt-python' }}"
+  - "{{ 'python3-lxml' if ansible_distribution_major_version|int >=8 else 'python-lxml' }}"
   - qemu-kvm
 
 # Packages that are only necessary if you require EFI support
