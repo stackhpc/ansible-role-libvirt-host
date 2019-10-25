@@ -26,9 +26,13 @@ should be a dict containing the following items:
 `libvirt_host_networks` is a list of networks to define and start. Each item
 should be a dict containing the following items:
 - `name` The name of the network.
-- `mode` The forwarding mode of the network, currently only `bridge` is
-  supported.
+- `mode` The forwarding mode of the network, 'bridge', 'route' and 'nat' are supported.
 - `bridge` The name of the bridge interface for this network.
+- `ip` IP address of the virtual bridge, mandatory for 'route' and 'nat' mode.
+- `netmask` Netmask of the virtual bridge, mandatory for 'route' and 'nat' mode.
+- `domain` DNS domaine name for 'route' and 'nat' mode, default to the network name (optional).
+- `dhcp_start`First IP of the DHCP range in 'route' or 'nat' mode (optional).
+- `dhcp_end` Last IP of the DHCP range in 'route' or 'nat' mode (optional).
 
 `libvirt_host_require_vt`is whether to require that Intel Virtualisation
 Technology (VT) is enabled in order to run this role. While this provides
@@ -91,6 +95,14 @@ Example Playbook
             - name: br-example
               mode: bridge
               bridge: br-example
+            - name: brnat-example
+              mode: nat
+              bridge: brnat-example
+              domain: example.local
+              ip: 192.168.133.254
+              netmask: 255.255.255.0
+              dhcp_start: 192.168.133.100
+              dhcp_end: 192.168.133.200
 
 Author Information
 ------------------
