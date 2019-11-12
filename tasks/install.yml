@@ -15,7 +15,7 @@
 - name: Ensure libvirt packages are installed
   package:
     name: "{{ libvirt_host_libvirt_packages }}"
-    state: installed
+    state: present
   register: result
   until: result is success
   retries: 3
@@ -25,7 +25,7 @@
 - name: Ensure the EPEL repository is enabled
   yum:
     name: epel-release
-    state: installed
+    state: present
   register: result
   until: result is success
   retries: 3
@@ -37,7 +37,7 @@
 - name: Ensure QEMU emulator packages are installed
   package:
     name: "{{ package }}"
-    state: installed
+    state: present
   with_items: "{{ libvirt_host_qemu_emulators }}"
   register: result
   until: result is success
