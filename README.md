@@ -72,6 +72,10 @@ init system when libvirtd is started - quotes will be added
 an explicit connection URI will not be set when calling virsh or any of
 the virt_ ansible modules.
 
+`libvirt_host_python3`: Whether the python3 version of the libvirt python
+bindings should be installed. If `false`, the python 2 bindings will be
+installed.
+
 Dependencies
 ------------
 
