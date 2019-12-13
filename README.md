@@ -15,13 +15,15 @@ Role Variables
 `libvirt_host_pools` is a list of pools to define and start. Each item
 should be a dict containing the following items:
 - `name` The name of the pool.
-- `type` The type of the pool, currently only `dir` is supported.
-- `capacity`  The capacity, in bytes, of the pool.
+- `type` The type of the pool, currently only `dir` and `lvm2` are supported.
+- `capacity`  The capacity, in bytes, of the pool. (optional)
 - `path` The absolute path to the pool's backing directory.
 - `mode` The access mode of the pool. N.B.: This should be specified as an
-  integer **without** a leading zero; for example: `mode: 755`.
-- `owner` The owner of the pool.
-- `group` The group of the pool.
+  integer **without** a leading zero; for example: `mode: 755`. (only `dir`)
+- `owner` The owner of the pool. (only `dir`)
+- `group` The group of the pool. (only `dir`)
+- `source` The name of the volume group. (only `lvm2`)
+- `pvs` A list of physical volumes the volume group consists of. (only `lvm2`)
 
 `libvirt_host_networks` is a list of networks to define and start. Each item
 should be a dict containing the following items:
@@ -97,6 +99,12 @@ Example Playbook
               mode: 755
               owner: my-user
               group: my-group
+            - name: lvm_pool
+              type: lvm2
+              source: vg1
+              target: /dev/vg1
+              pvs:
+                - /dev/sda3
           libvirt_host_networks:
             - name: br-example
               mode: bridge
