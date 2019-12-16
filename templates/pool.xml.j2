@@ -3,6 +3,12 @@
   {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
   {% endif %}
+  {% if item.type == 'lvm2' %}
+  <source>
+    <name>{{ item.source }}</name>
+    <format type='lvm2'/>
+  </source>
+  {% endif %}
   <target>
     <path>{{ item.path | default('placeholder_value') }}</path>
   </target>

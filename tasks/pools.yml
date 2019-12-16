@@ -1,5 +1,5 @@
 ---
-- name: Ensure libvirt storage pool directories exist
+- name: Ensure libvirt dir storage pool directories exist
   file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
@@ -7,6 +7,14 @@
     mode: "{{ item.mode|int(base=8) }}"
     state: directory
   when: item.type == "dir"
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
+
+- name: Ensure libvirt lvm2 storage pool directories exist
+  lvg:
+    vg: "{{ item.source }}"
+    pvs: "{{ item.pvs }}"
+  when: item.type == "lvm2"
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
