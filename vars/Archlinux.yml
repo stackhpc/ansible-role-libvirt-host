@@ -1,0 +1,22 @@
+---
+# List of package dependencies common to all Debian distributions
+libvirt_host_libvirt_packages_default:
+  - libvirt
+  - qemu-headless
+  - libvirt-python
+  - python-lxml
+  - ebtables 
+  - dnsmasq
+
+# Packages that are only necessary if you require EFI support
+libvirt_host_packages_efi:
+  - ovmf
+
+# List of all packages to install
+libvirt_host_libvirt_packages: >
+  {{ libvirt_host_libvirt_packages_default +
+     (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
+  }}
+
+# These are passed to the lineinfile module to customize configuration files
+libvirt_host_lineinfile_extra_rules: []
