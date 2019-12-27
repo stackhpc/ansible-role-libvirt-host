@@ -54,7 +54,7 @@
 - name: Create Ansible fact for zfs pool to path mapping
   ini_file:
     path: /etc/ansible/facts.d/libvirt.fact
-    section: zfs-storage-pools
+    section: zfs_storage_pools
     option: "{{ item.name }}"
     value: "{{ item.source }}"
   when: item.type == "zfs"
