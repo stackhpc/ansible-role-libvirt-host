@@ -46,10 +46,10 @@
 - name: "Create custom fact directory"
   file:
     path: "/etc/ansible/facts.d"
-    state: "directory"  
+    state: "directory"
   when: item.type == "zfs"
   with_items: "{{ libvirt_host_pools }}"
-  become: True  
+  become: True
 
 - name: Create Ansible fact for zfs pool to path mapping
   ini_file:
@@ -62,4 +62,4 @@
   become: True
 
 - name: reload facts
-  setup: ~  
+  setup: ~
