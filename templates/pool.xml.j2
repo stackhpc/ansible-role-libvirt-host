@@ -11,4 +11,9 @@
     {% endif %}
   </source>
   {% endif %}
+  {% if item.type != 'zfs' %}
+  <target>
+    <path>{{ item.path | default('placeholder_value') }}</path>
+  </target>
+  {% endif %}
 </pool>
