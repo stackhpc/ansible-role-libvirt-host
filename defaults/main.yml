@@ -2,7 +2,7 @@
 # List of pools to define and start.
 # Each item should be a dict containing the following items:
 # name: The name of the pool.
-# type: The type of the pool, currently only 'dir' is supported.
+# type: The type of the pool, currently only 'dir', 'lvm2' or 'zfs' are supported.
 # capacity:  The capacity, in bytes, of the pool.
 # path: The absolute path to the pool's backing directory.
 # mode: The access mode of the pool.
