@@ -64,6 +64,4 @@ libvirt_host_uri: >-
 
 # Whether the python3 version of the libvirt python bindings should be
 # installed. If false, the python 2 bindings will be installed.
-libvirt_host_python3: >-
-  {{ (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= 8) or
-     ansible_python_interpreter | default('python') | basename is match('python3.*') }}
+libvirt_host_python3: "{{ ansible_python.version.major == 3 }}"
