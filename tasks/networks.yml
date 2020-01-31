@@ -1,4 +1,52 @@
 ---
+- name: Get current state of libvirt networks
+  virt_net:
+    name: "{{ item.name }}"
+    command: get_xml
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+  register: qemu_stackhpc_net_xml
+
+- name: Convert state of libvirt networks to dict
+  set_fact:
+    qemu_stackhpc_net: "{{ qemu_stackhpc_net_xml.results | xml2dict }}"
+
+- name: Stop all misconfigured networks
+  virt_net:
+    name: "{{ item.name }}"
+    state: inactive
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
+  when: >
+    'forward' in qemu_stackhpc_net[item.name] and 
+    'mode' in qemu_stackhpc_net[item.name].forward and 
+    qemu_stackhpc_net[item.name].forward.mode == 'nat' and
+    (
+      qemu_stackhpc_net[item.name].ip.address != item.ip or
+      qemu_stackhpc_net[item.name].ip.netmask != item.netmask or
+      (qemu_stackhpc_net[item.name].ip.dhcp.range.start if 'dhcp' in qemu_stackhpc_net[item.name].ip else '') != (item.dhcp_start if 'dhcp_start' in item else '') or
+      (qemu_stackhpc_net[item.name].ip.dhcp.range.end   if 'dhcp' in qemu_stackhpc_net[item.name].ip else '') != (item.dhcp_end   if 'dhcp_end'   in item else '')
+    )
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+- name: Remove all misconfigured networks
+  virt_net:
+    name: "{{ item.name }}"
+    command: undefine
+  when: >
+    'forward' in qemu_stackhpc_net[item.name] and 
+    'mode' in qemu_stackhpc_net[item.name].forward and 
+    qemu_stackhpc_net[item.name].forward.mode == 'nat' and
+    (
+      qemu_stackhpc_net[item.name].ip.address != item.ip or
+      qemu_stackhpc_net[item.name].ip.netmask != item.netmask or
+      (qemu_stackhpc_net[item.name].ip.dhcp.range.start if 'dhcp' in qemu_stackhpc_net[item.name].ip else '') != (item.dhcp_start if 'dhcp_start' in item else '') or
+      (qemu_stackhpc_net[item.name].ip.dhcp.range.end   if 'dhcp' in qemu_stackhpc_net[item.name].ip else '') != (item.dhcp_end   if 'dhcp_end'   in item else '')
+    )
+  with_items: "{{ libvirt_host_networks }}"
+  become: True
+
+
 - name: Ensure libvirt networks are defined
   virt_net:
     name: "{{ item.name }}"
