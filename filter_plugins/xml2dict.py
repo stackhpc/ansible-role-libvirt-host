@@ -9,6 +9,13 @@ class FilterModule(object):
         from xml.etree import ElementTree
         # return json.dumps(xmltodict.parse(value))
         res = {}
+
+        if isinstance(value, list):
+            for item in value:
+                e = self.xml2dict(item['get_xml'])
+                res[e['name']] = e
+            return res
+
         e = ElementTree.fromstring(value)
 
         def rp(root, result):
