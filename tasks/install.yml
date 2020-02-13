@@ -39,6 +39,8 @@
     name: "{{ package }}"
     state: present
   with_items: "{{ libvirt_host_qemu_emulators }}"
+  # NOTE(mgoddard): CentOS 8 does not provide separate packages per-emulator.
+  when: ansible_os_family != "RedHat" or ansible_distribution_major_version | int == 7
   register: result
   until: result is success
   retries: 3
