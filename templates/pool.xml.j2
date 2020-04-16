@@ -1,4 +1,8 @@
+{% if item.type == 'lvm2' %}
+<pool type='logical'>
+{% else %}
 <pool type='{{ item.type }}'>
+{% endif %}
   <name>{{ item.name }}</name>
   {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
@@ -7,7 +11,7 @@
   <source>
     <name>{{ item.source }}</name>
     {% if item.type == 'lvm2' %}
-    <format type='logical'/>
+    <format type='lvm2'/>
     {% endif %}
   </source>
   {% endif %}
