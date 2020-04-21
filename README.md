@@ -23,7 +23,7 @@ should be a dict containing the following items:
 - `owner` The owner of the pool. (only `dir`)
 - `group` The group of the pool. (only `dir`)
 - `source` The name of the volume group. (only `lvm2`)
-- `pvs` A list of physical volumes the volume group consists of. (only `lvm2`)
+- `pvs` A list of physical volumes the volume group consists of. (only `lvm2`). N.B. if specified, the lvg will be created on top of the PVS, otherwise the lv should have been created before.
 
 `libvirt_host_networks` is a list of networks to define and start. Each item
 should be a dict containing the following items:

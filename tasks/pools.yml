@@ -14,7 +14,7 @@
   lvg:
     vg: "{{ item.source }}"
     pvs: "{{ item.pvs }}"
-  when: item.type == "lvm2"
+  when: item.type == "lvm2" and item.pvs is defined
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
