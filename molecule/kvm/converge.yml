@@ -4,11 +4,10 @@
   vars:
     manage_lvm: true
     lvm_groups:
-      - vgname: libvirtpool
+      - vgname: libvirt_vg
         disks:
           - /dev/vdb
         create: true
-        lvnames: []
     users_group_list:
       - name: libvirt
     systemusers_user_list:
