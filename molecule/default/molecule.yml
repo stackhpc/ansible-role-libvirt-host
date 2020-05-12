@@ -1,0 +1,39 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+    roles-path: ../community
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+
+lint: yamllint . && flake8 && ansible-lint --exclude=meta
+platforms:
+  - name: Fedora-Molecule-Virtualization
+    box: fedora/31-cloud-base
+    memory: 8000
+    cpus: 4
+    provider_raw_config_args:
+      - "customize ['modifyvm', :id, '--nested-hw-virt', 'on']"
+    provider_override_args:
+      - "persistent_storage.enabled = true"
+      - "persistent_storage.location = 'molecule-virtualization.vdi'"
+      - "persistent_storage.size = 100"
+      - "persistent_storage.mount = false"
+      - "persistent_storage.diskdevice = '/dev/sdb'"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: yes
+    pre_build_image: yes
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_ROLES_PATH: ../../..:../../../community
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
+  options:
+    v: 1
