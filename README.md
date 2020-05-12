@@ -81,7 +81,7 @@ installed.
 Dependencies
 ------------
 
-None
+* [The LVM role](https://github.com/mrlesmithjr/ansible-manage-lvm) You can install it using `ansible-galaxy install -r requirements.yml --roles-p ../community`
 
 Example Playbook
 ----------------
@@ -91,6 +91,11 @@ Example Playbook
       hosts: all
       roles:
         - role: stackhpc.libvirt-host
+          lvm_groups: # see according properties on [The LVM role](https://github.com/mrlesmithjr/ansible-manage-lvm)
+            - vgname: libvirtvg
+              disks:
+                - /dev/sdb1
+              create: true
           libvirt_host_pools:
             - name: my-pool
               type: dir
@@ -101,10 +106,7 @@ Example Playbook
               group: my-group
             - name: lvm_pool
               type: lvm2
-              source: vg1
-              target: /dev/vg1
-              pvs:
-                - /dev/sda3
+              source: libvirtvg
           libvirt_host_networks:
             - name: br-example
               mode: bridge
