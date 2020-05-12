@@ -1,0 +1,5 @@
+---
+roles:
+  - name: tcharl.ansible_manage_lvm
+    source: https://galaxy.ansible.com
+    path: ../community

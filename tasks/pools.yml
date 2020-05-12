@@ -1,4 +1,12 @@
 ---
+- name: Include lvm role to create VG
+  include_role:
+    name: tcharl.ansible_manage_lvm
+  when: >
+    manage_lvm is defined and
+    manage_lvm and
+    libvirt_host_pools |  map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
+
 - name: Ensure libvirt dir storage pool directories exist
   file:
     path: "{{ item.path }}"
