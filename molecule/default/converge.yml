@@ -15,7 +15,7 @@
         group: libvirt
         groups: wheel
     libvirt_host_pools:
-      - name: libvirt_vg
+      - name: libvirtpool
         type: lvm2
         source: libvirt_vg
     libvirt_host_networks:
