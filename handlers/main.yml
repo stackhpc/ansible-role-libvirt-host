@@ -24,6 +24,3 @@
   with_items: "{{ libvirt_host_networks }}"
   become: True
   listen: Ensure libvirt networks are active
-
-
-
