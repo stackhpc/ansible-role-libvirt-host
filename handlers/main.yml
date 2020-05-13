@@ -5,3 +5,12 @@
     name: libvirtd
     state: restarted
   become: True
+
+- name: Ensure libvirt storage pools are active
+  virt_pool:
+    name: "{{ item.name }}"
+    state: active
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
+  with_items: "{{ libvirt_host_pools }}"
+  become: True
+

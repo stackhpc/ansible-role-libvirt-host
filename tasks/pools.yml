@@ -25,14 +25,7 @@
     xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_pools }}"
-  become: True
-
-- name: Ensure libvirt storage pools are active
-  virt_pool:
-    name: "{{ item.name }}"
-    state: active
-    uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_pools }}"
+  notify: Ensure libvirt storage pools are active
   become: True
 
 - name: Ensure libvirt storage pools are started on boot
