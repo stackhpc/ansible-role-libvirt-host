@@ -34,17 +34,3 @@ verifier:
     v: 1
 scenario:
   name: kvm
-  test_sequence:
-    - lint
-    - dependency
-    - cleanup
-    - destroy
-    - syntax
-    - create
-    - prepare
-    - converge
- #   - idempotence
-    - side_effect
-    - verify
-    - cleanup
-    - destroy

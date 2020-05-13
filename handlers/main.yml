@@ -4,5 +4,4 @@
   service:
     name: libvirtd
     state: restarted
-    enabled: yes
-  become: true
+  become: True
