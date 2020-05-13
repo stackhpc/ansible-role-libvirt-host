@@ -7,14 +7,7 @@
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_networks }}"
   become: True
-
-- name: Ensure libvirt networks are active
-  virt_net:
-    name: "{{ item.name }}"
-    state: active
-    uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_networks }}"
-  become: True
+  notify: Ensure libvirt networks are active
 
 - name: Ensure libvirt networks are started on boot
   virt_net:
