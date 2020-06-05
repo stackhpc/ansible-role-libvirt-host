@@ -19,7 +19,7 @@ galaxy_info:
         - all
     - name: ArchLinux
       versions:
-        - all        
+        - all
   galaxy_tags:
     - cloud
     - kvm
