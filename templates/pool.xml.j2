@@ -7,10 +7,10 @@
   {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
   {% endif %}
-  {% if item.type == 'lvm2' or item.type == 'zfs' %}
+  {% if item.type in ['logical', 'lvm2', 'zfs'] %}
   <source>
     <name>{{ item.source }}</name>
-    {% if item.type == 'lvm2' %}
+    {% if item.type in ['logical', 'lvm2'] %}
     <format type='lvm2'/>
     {% endif %}
   </source>
