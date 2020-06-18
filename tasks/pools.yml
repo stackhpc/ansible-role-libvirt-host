@@ -10,11 +10,11 @@
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
-- name: Ensure libvirt lvm2 storage pool directories exist
+- name: Ensure libvirt LVM storage pool directories exist
   lvg:
     vg: "{{ item.source }}"
     pvs: "{{ item.pvs }}"
-  when: item.type == "lvm2"
+  when: item.type in ["lvm2", "logical"]
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
