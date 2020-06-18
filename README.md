@@ -27,6 +27,9 @@ should be a dict containing the following items:
 - `source` The name of the volume group. (only when type is `logical`)
 - `pvs` A list of physical volumes the volume group consists of. (only when
   type is `logical`)
+- `pvs` A list of physical volumes the volume group consists of. (only when
+  type is `logical`). N.B. if specified, the volume group will be created on
+  top of the PVs, otherwise the logical volume should have been created before.
 
 `libvirt_host_networks` is a list of networks to define and start. Each item
 should be a dict containing the following items:
@@ -84,7 +87,7 @@ installed.
 Dependencies
 ------------
 
-None
+* [The LVM role](https://github.com/mrlesmithjr/ansible-manage-lvm) You can install it using `ansible-galaxy install -r requirements.yml --roles-p ../community`
 
 Example Playbook
 ----------------
@@ -94,6 +97,11 @@ Example Playbook
       hosts: all
       roles:
         - role: stackhpc.libvirt-host
+          lvm_groups: # see according properties on [The LVM role](https://github.com/mrlesmithjr/ansible-manage-lvm)
+            - vgname: libvirtvg
+              disks:
+                - /dev/sdb1
+              create: true
           libvirt_host_pools:
             - name: my-pool
               type: dir
@@ -104,10 +112,7 @@ Example Playbook
               group: my-group
             - name: lvm_pool
               type: logical
-              source: vg1
-              target: /dev/vg1
-              pvs:
-                - /dev/sda3
+              source: libvirtvg
           libvirt_host_networks:
             - name: br-example
               mode: bridge

@@ -1,4 +1,12 @@
 ---
+- name: Include lvm role to create VG
+  include_role:
+    name: tcharl.ansible_manage_lvm
+  when: >
+    manage_lvm is defined and
+    manage_lvm and
+    libvirt_host_pools |  map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
+
 - name: Ensure libvirt dir storage pool directories exist
   file:
     path: "{{ item.path }}"
@@ -10,14 +18,6 @@
   with_items: "{{ libvirt_host_pools }}"
   become: True
 
-- name: Ensure libvirt LVM storage pool directories exist
-  lvg:
-    vg: "{{ item.source }}"
-    pvs: "{{ item.pvs }}"
-  when: item.type in ["lvm2", "logical"]
-  with_items: "{{ libvirt_host_pools }}"
-  become: True
-
 - name: Ensure libvirt storage pools are defined
   virt_pool:
     name: "{{ item.name }}"
@@ -25,14 +25,7 @@
     xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_pools }}"
-  become: True
-
-- name: Ensure libvirt storage pools are active
-  virt_pool:
-    name: "{{ item.name }}"
-    state: active
-    uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_pools }}"
+  notify: Ensure libvirt storage pools are active
   become: True
 
 - name: Ensure libvirt storage pools are started on boot
