@@ -24,4 +24,4 @@ before_install:
     sudo pip3 install ansible ansible-lint
     sudo pip3 install -I molecule molecule-vagrant
 
-script: travis_wait 30 sudo molecule test --scenario-name kvm
+script: travis_wait 60 sudo molecule test --scenario-name kvm
