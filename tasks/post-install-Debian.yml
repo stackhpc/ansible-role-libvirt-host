@@ -21,7 +21,7 @@
           insertafter: '^#libvirtd_opts='
           regexp: '^libvirtd_opts='
           line: "libvirtd_opts={{ libvirt_host_libvirtd_args }}"
-        condition: "{{ not libvirt_host_libvirtd_args | length > 0 }}"
+        condition: "{{ libvirt_host_libvirtd_args | length > 0 }}"
   vars:
     libvirt_env_path: "{{ '/etc/default/libvirt-bin' if libvirt_bin_stat.stat.exists else '/etc/default/libvirtd' }}"
   tags: vars
