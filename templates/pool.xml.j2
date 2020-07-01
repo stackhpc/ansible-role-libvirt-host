@@ -7,11 +7,19 @@
   {% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
   {% endif %}
-  {% if item.type in ['logical', 'lvm2', 'zfs'] %}
+  {% if item.type in ['logical', 'lvm2', 'zfs', 'rbd'] %}
   <source>
     <name>{{ item.source }}</name>
     {% if item.type in ['logical', 'lvm2'] %}
     <format type='lvm2'/>
+    {% endif %}
+    {% if item.type == 'rbd' %}
+    {% for host in item.hosts %}
+    <host name='{{ host }}' />
+    {% endfor %}
+    <auth type='ceph' username='{{ item.username }}'>
+      <secret usage='{{ item.name }}'/>
+    </auth>
     {% endif %}
   </source>
   {% endif %}

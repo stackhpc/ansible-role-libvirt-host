@@ -18,6 +18,11 @@
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
+- include: rbd.yml
+  when: item.type == "rbd"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  become: True
+
 - name: Ensure libvirt storage pools are defined
   virt_pool:
     name: "{{ item.name }}"

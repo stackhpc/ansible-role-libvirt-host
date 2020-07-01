@@ -26,5 +26,10 @@ libvirt_host_libvirt_packages: >
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}
 
+# Packages for RBD volume pool support
+libvirt_host_packages_rbd_volume_pool:
+  - libvirt-daemon-driver-storage-rbd
+  - qemu-block-extra
+
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules: []
