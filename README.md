@@ -112,6 +112,16 @@ Example Playbook
               target: /dev/vg1
               pvs:
                 - /dev/sda3
+	    - name: rbd-pool
+              type: rbd
+              source: rbd
+              hosts:
+                - 192.168.42.200
+                - 192.168.42.204
+                - 192.168.42.208
+              username: admin
+              passphrase: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
           libvirt_host_networks:
             - name: br-example
               mode: bridge
