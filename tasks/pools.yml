@@ -19,9 +19,10 @@
   become: True
 
 - include_tasks: rbd.yml
+  apply:
+    become: True
   when: item.type == "rbd"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
-  become: True
 
 - name: Ensure libvirt storage pools are defined
   virt_pool:
