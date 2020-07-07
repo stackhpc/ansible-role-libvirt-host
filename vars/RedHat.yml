@@ -18,6 +18,11 @@ libvirt_host_libvirt_packages: >
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}
 
+# Packages for RBD volume pool support
+libvirt_host_packages_rbd_volume_pool:
+  - libvirt-daemon-driver-storage-rbd
+  - qemu-kvm-block-rbd
+
 libvirt_host_custom_yum_repos_efi:
   # Add custom repository as OVMF package seems to be broken
   - name: qemu-firmware-jenkins

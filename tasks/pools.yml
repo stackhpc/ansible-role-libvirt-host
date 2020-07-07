@@ -7,7 +7,7 @@
     mode: "{{ item.mode|int(base=8) }}"
     state: directory
   when: item.type == "dir"
-  with_items: "{{ libvirt_host_pools }}"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
 - name: Ensure libvirt LVM storage pool directories exist
@@ -15,8 +15,15 @@
     vg: "{{ item.source }}"
     pvs: "{{ item.pvs }}"
   when: item.type in ["lvm2", "logical"]
-  with_items: "{{ libvirt_host_pools }}"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
+
+- include_tasks:
+    file: rbd.yml
+    apply:
+      become: True
+  when: item.type == "rbd"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
 
 - name: Ensure libvirt storage pools are defined
   virt_pool:
@@ -24,7 +31,7 @@
     command: define
     xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_pools }}"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
 - name: Ensure libvirt storage pools are active
@@ -32,7 +39,7 @@
     name: "{{ item.name }}"
     state: active
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_pools }}"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
 - name: Ensure libvirt storage pools are started on boot
@@ -40,5 +47,5 @@
     name: "{{ item.name }}"
     autostart: yes
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
-  with_items: "{{ libvirt_host_pools }}"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True

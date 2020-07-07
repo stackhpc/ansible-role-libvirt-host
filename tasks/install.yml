@@ -38,7 +38,7 @@
   package:
     name: "{{ package }}"
     state: present
-  with_items: "{{ libvirt_host_qemu_emulators }}"
+  loop: "{{ libvirt_host_qemu_emulators | flatten(levels=1) }}"
   # NOTE(mgoddard): CentOS 8 does not provide separate packages per-emulator.
   when: ansible_os_family != "RedHat" or ansible_distribution_major_version | int == 7
   register: result
