@@ -112,7 +112,7 @@ Example Playbook
               target: /dev/vg1
               pvs:
                 - /dev/sda3
-	    - name: rbd-pool
+            - name: rbd-pool
               type: rbd
               source: rbd
               hosts:
