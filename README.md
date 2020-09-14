@@ -27,8 +27,8 @@ should be a dict containing the following items:
 - `source` The name of the volume group (when type is `logical`) or RBD pool
   (when type is `rbd`).
 - `pvs` A list of physical volumes the volume group consists of. (only when
-- `hosts` The list of the Ceph monitors IPs or hostnames. (only `rbd`)
   type is `logical`)
+- `hosts` The list of the Ceph monitors IPs or hostnames. (only `rbd`)
 - `username` The username used for RADOS authentification. (only `rbd`)
 - `passphrase` The passphrase used for RADOS authentification. (only `rbd`)
 
