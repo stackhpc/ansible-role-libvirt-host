@@ -1,6 +1,11 @@
 ---
 # List of libvirt package dependencies.
 libvirt_host_libvirt_packages_default:
+  # NOTE(mgoddard): CentOS 8.3 has a bug in which updating qemu-kvm does not
+  # update libgcrypt. This leads to failues when using libvirt/qemu. See
+  # https://bugzilla.redhat.com/show_bug.cgi?id=1840485.
+  - libgcrypt
+  - libgcrypt-devel
   - libvirt
   - libvirt-daemon-kvm
   - "{{ 'python3-libvirt' if libvirt_host_python3 | bool else 'libvirt-python' }}"
