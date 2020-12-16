@@ -1,0 +1,9 @@
+---
+- name: Ensure libvirt client packages are installed
+  package:
+    name: "{{ libvirt_host_libvirt_packages_client }}"
+    state: present
+  register: result
+  until: result is success
+  retries: 3
+  become: True

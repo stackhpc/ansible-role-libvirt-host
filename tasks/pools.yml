@@ -1,15 +1,4 @@
 ---
-- name: Ensure libvirt dir storage pool directories exist
-  file:
-    path: "{{ item.path }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: "{{ item.mode|int(base=8) }}"
-    state: directory
-  when: item.type == "dir"
-  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
-  become: True
-
 - name: Ensure libvirt LVM storage pool directories exist
   lvg:
     vg: "{{ item.source }}"
@@ -32,6 +21,27 @@
     xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  become: True
+
+- name: Check libvirt directory storage pool status
+  virt_pool:
+    name: "{{ item.name }}"
+    command: status
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
+  when: item.type == "dir"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  become: True
+  register: pool_status
+
+- name: Ensure libvirt directory storage pools are built
+  virt_pool:
+    name: "{{ item.item.name }}"
+    command: build
+    uri: "{{ libvirt_host_uri | default(omit, true) }}"
+  when:
+    - item is not skipped
+    - item.status != "active"
+  loop: "{{ pool_status.results }}"
   become: True
 
 - name: Ensure libvirt storage pools are active

@@ -3,10 +3,14 @@
 libvirt_host_libvirt_packages_default:
   - libvirt
   - qemu-headless
-  - libvirt-python
-  - python-lxml
   - ebtables 
   - dnsmasq
+
+# List of all client packages to install.
+libvirt_host_libvirt_packages_client:
+  - libvirt
+  - libvirt-python
+  - python-lxml
 
 # Packages that are only necessary if you require EFI support
 libvirt_host_packages_efi:
@@ -15,6 +19,7 @@ libvirt_host_packages_efi:
 # List of all packages to install
 libvirt_host_libvirt_packages: >
   {{ libvirt_host_libvirt_packages_default +
+     libvirt_host_libvirt_packages_client +
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}
 

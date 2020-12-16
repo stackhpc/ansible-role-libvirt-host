@@ -1,7 +1,12 @@
 ---
 - include: prelude.yml
 - include: validate.yml
-- include: install.yml
+- include: install-daemon.yml
+  when: libvirt_host_install_daemon | bool
+- include: install-client.yml
+  when:
+    - not libvirt_host_install_daemon | bool
+    - libvirt_host_install_client | bool
 - name: Run post-install stage
   include: "{{ post_install_path }}"
   with_first_found:
@@ -12,5 +17,6 @@
   loop_control:
     loop_var: post_install_path
 - include: config.yml
+  when: libvirt_host_install_daemon | bool
 - include: pools.yml
 - include: networks.yml

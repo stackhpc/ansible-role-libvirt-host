@@ -85,6 +85,12 @@ the virt_ ansible modules.
 bindings should be installed. If `false`, the python 2 bindings will be
 installed.
 
+`libvirt_host_install_daemon`: Whether to install and enable the libvirt
+daemon. Default is `true`.
+
+`libvirt_host_install_client`: Whether to install and enable the libvirt
+client. Default is `true`.
+
 Dependencies
 ------------
 
