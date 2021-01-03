@@ -1,35 +1,43 @@
 ---
+
+dist: bionic
+
 language: python
-python: "2.7"
-
-# Use the new container infrastructure
-sudo: false
-
-# Install ansible
 addons:
   apt:
+    sources:
+      - sourceline: 'deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main'
+        key_url: 'https://apt.releases.hashicorp.com/gpg'
+    update: true
     packages:
-      - python-pip
+      - bridge-utils
+      - dnsmasq-base
+      - ebtables
+      - libvirt-bin
+      - libvirt-dev
+      - qemu-kvm
+      - qemu-utils
+      - ruby-dev
+      - ca-certificates
+      - curl
+      - gcc
+      - iproute2
+      - sudo
+      - vagrant
+python:
+  - "3.8"
 
 install:
-  # Install ansible
+#  - wget https://releases.hashicorp.com/vagrant/$VAGRANT_VER/vagrant_"$VAGRANT_VER"_x86_64.deb
+#  - sudo apt -y install ./vagrant_"$VAGRANT_VER"_x86_64.deb
+  - vagrant plugin install vagrant-libvirt
+  - pip install wheel pyopenssl
+  - pip install netaddr python-vagrant yamllint testinfra flake8
   - pip install ansible ansible-lint
+  - pip install molecule molecule-vagrant python-vagrant
+  - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
 
-  # Check ansible version
-  - ansible --version
-
-  # Create ansible.cfg with correct roles_path
-  - printf '[defaults]\nroles_path=../' >ansible.cfg
-
-  # Compensate for repo name being different to the role
-  - ln -s $(pwd) ../stackhpc.libvirt-host
-
-script:
-  # Run Ansible lint against the role
-  - ansible-lint tasks/main.yml
-
-  # Basic role syntax check
-  - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-
-notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+script: travis_wait 30 molecule test --scenario-name kvm
+branches:
+  only:
+    - master
