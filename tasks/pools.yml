@@ -1,11 +1,22 @@
 ---
-- name: Ensure libvirt LVM storage pool directories exist
-  lvg:
-    vg: "{{ item.source }}"
-    pvs: "{{ item.pvs }}"
-  when: item.type in ["lvm2", "logical"]
-  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
-  become: True
+- name: Include lvm role to create VG
+  include_role:
+    name: tcharl.ansible_manage_lvm
+  when:
+    - manage_lvm is defined
+    - manage_lvm
+    - libvirt_host_pools |  map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
+
+- name: Ensure libvirt dir storage pool directories exist
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode|int(base=8) }}"
+    state: directory
+  when: item.type == "dir"
+  with_items: "{{ libvirt_host_pools }}"
+  become: true
 
 - include_tasks:
     file: rbd.yml

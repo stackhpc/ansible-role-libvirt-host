@@ -7,7 +7,7 @@
     insertafter: '^#unix_sock_dir ='
     regexp: '^unix_sock_dir ='
     line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
-  become: True
+  become: true
   when: libvirt_host_socket_dir | length > 0
   notify: restart libvirt
 
@@ -18,23 +18,25 @@
     owner: root
     group: root
     mode: 0755
-  become: True
+  become: true
   when: libvirt_host_socket_dir | length > 0
 
 - name: Process lineinfile rules
   lineinfile: "{{ rule.args }}"
-  become: True
+  become: true
   loop: "{{ libvirt_host_lineinfile_extra_rules | default([]) }}"
   loop_control:
     loop_var: rule
   when: rule.condition
-  notify: restart libvirt
+  notify:
+    - restart libvirt
 
 - name: Flush handlers
   meta: flush_handlers
 
 - name: Ensure the libvirt daemon is started and enabled
-  systemd:
+  service:
     name: libvirtd
     state: started
+    enabled: yes
   become: True

@@ -59,6 +59,6 @@
 
     - name: Wait until the string "auth" is in the vagrant log
       wait_for:
-        path: /home/vagrant/myvm.log
-        search_regex: auth
-        timeout: 1800
+        path: /home/vagrant/myvmerr.log
+        search_regex: SSH\sis\sready
+        timeout: 1000
