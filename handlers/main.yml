@@ -5,3 +5,7 @@
     name: libvirtd
     state: restarted
   become: true
+
+- name: reload libvirt qemu apparmor profile template
+  command: apparmor_parser -r /etc/apparmor.d/libvirt/TEMPLATE.qemu
+  become: true
