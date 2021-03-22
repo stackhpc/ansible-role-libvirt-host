@@ -32,7 +32,9 @@
     insertbefore: "^}"
     line: "  {{ item.path }}/** rwk,"
   become: true
-  when: item.type == "dir"
+  when:
+    - item.type == "dir"
+    - libvirt_host_install_daemon | bool
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   notify:
     - reload libvirt qemu apparmor profile template
