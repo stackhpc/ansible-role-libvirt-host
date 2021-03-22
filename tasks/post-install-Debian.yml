@@ -25,3 +25,14 @@
   vars:
     libvirt_env_path: "{{ '/etc/default/libvirt-bin' if libvirt_bin_stat.stat.exists else '/etc/default/libvirtd' }}"
   tags: vars
+
+- name: Configure libvirt QEMU apparmor profile template
+  lineinfile:
+    path: "/etc/apparmor.d/libvirt/TEMPLATE.qemu"
+    insertbefore: "^}"
+    line: "  {{ item.path }}/** rwk,"
+  become: true
+  when: item.type == "dir"
+  loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  notify:
+    - reload libvirt qemu apparmor profile template
