@@ -3,16 +3,19 @@
 libvirt_host_libvirt_packages_common:
   - qemu-kvm
 
-# Package that contains the libvirt daemon
-libvirt_host_libvirt_packages_libvirt_daemon: >-
-  {%- if (ansible_distribution == "Ubuntu" and
-          ansible_distribution_major_version is version_compare('16.04', '<')) or
-         (ansible_distribution == "Debian" and
-          ansible_distribution_major_version is version_compare('8', '<')) -%}
-  libvirt-bin
-  {%- else -%}
-  libvirt-daemon-system
-  {%- endif -%}
+# List of all daemon packages to install.
+libvirt_host_libvirt_packages_libvirt_daemon:
+  # The apparmor package contains the apparmor_parser tool.
+  - "{% if ansible_apparmor.status| default == 'enabled' %}apparmor{% endif %}"
+  - >-
+    {%- if (ansible_distribution == "Ubuntu" and
+            ansible_distribution_major_version is version_compare('16.04', '<')) or
+           (ansible_distribution == "Debian" and
+            ansible_distribution_major_version is version_compare('8', '<')) -%}
+    libvirt-bin
+    {%- else -%}
+    libvirt-daemon-system
+    {%- endif -%}
 
 # List of all client packages to install.
 libvirt_host_libvirt_packages_client:
@@ -27,7 +30,7 @@ libvirt_host_packages_efi:
 # List of all packages to install
 libvirt_host_libvirt_packages: >
   {{ libvirt_host_libvirt_packages_common +
-     [libvirt_host_libvirt_packages_libvirt_daemon] +
+     libvirt_host_libvirt_packages_libvirt_daemon +
      libvirt_host_libvirt_packages_client +
      (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
   }}

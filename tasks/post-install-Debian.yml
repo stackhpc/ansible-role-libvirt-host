@@ -32,7 +32,10 @@
     insertbefore: "^}"
     line: "  {{ item.path }}/** rwk,"
   become: true
-  when: item.type == "dir"
+  when:
+    - libvirt_host_install_daemon | bool
+    - ansible_apparmor.status | default == 'enabled'
+    - item.type == "dir"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   notify:
     - reload libvirt qemu apparmor profile template
