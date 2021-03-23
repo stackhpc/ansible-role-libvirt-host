@@ -14,7 +14,7 @@
 
 - name: Ensure libvirt packages are installed
   package:
-    name: "{{ libvirt_host_libvirt_packages }}"
+    name: "{{ libvirt_host_libvirt_packages | select | list }}"
     state: present
   register: result
   until: result is success
