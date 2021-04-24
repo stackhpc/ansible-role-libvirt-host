@@ -1,7 +1,7 @@
 ---
 - name: Include lvm role to create VG
   include_role:
-    name: tcharl.ansible_manage_lvm
+    name: mrlesmithjr.manage-lvm
   when:
     - manage_lvm is defined
     - manage_lvm
@@ -16,7 +16,7 @@
     state: directory
   when: item.type == "dir"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
-  become: true
+  become: True
 
 - name: include rbd.yml
   include_tasks:

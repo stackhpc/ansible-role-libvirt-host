@@ -1,0 +1,47 @@
+---
+- name: centos | installing lvm2
+  package:
+    name: lvm2
+    state: present
+  become: true
+
+- name: centos | installing sg3_utils
+  package:
+    name: sg3_utils
+    state: present
+  become: true
+
+- name: centos | debug lvg
+  debug:
+    var: lv
+    verbosity: 3
+  loop: "{{ lookup('subelements', lvm_groups, 'lvnames', {'skip_missing': True}, wantlist=True) }}"
+  loop_control:
+    loop_var: lv
+
+- name: centos | install xfs tools
+  package:
+    name: "xfsprogs"
+    state: "present"
+  become: true
+  loop: "{{ lookup('subelements', lvm_groups, 'lvnames', {'skip_missing': True}, wantlist=True) }}"
+  loop_control:
+    loop_var: lv
+  when:
+    - lv.1 is defined
+    - lv.1 != "None"
+    - lv.1.filesystem is defined
+    - lv.1.filesystem == "xfs"
+    - lv.1.create is defined
+    - lv.1.create|bool
+
+- name: centos | checking for scsi devices
+  command: sg_scan
+  become: true
+  register: scsi_devices
+  changed_when: false
+
+- name: centos | rescanning for new disks
+  command: /usr/bin/rescan-scsi-bus.sh
+  become: true
+  changed_when: false

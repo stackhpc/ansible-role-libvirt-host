@@ -1,0 +1,22 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    lvm_groups:
+      - vgname: my_vg
+        disks:
+          - /dev/vdb
+        create: true
+        lvnames:
+          - lvname: my_lv
+            size: 40%VG
+            opts: "--wipesignatures y"
+            create: true
+            filesystem: ext4
+            mount: true
+            mntp: "/var/lib/mountpoint"
+    manage_lvm: true
+  tasks:
+    - name: "Include lvm"
+      include_role:
+        name: "ansible-manage-lvm"

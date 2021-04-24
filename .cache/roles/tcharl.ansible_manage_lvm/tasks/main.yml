@@ -1,0 +1,12 @@
+---
+# tasks file for ansible-manage-lvm
+- include_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- include_tasks: centos.yml
+  when: ansible_os_family == "RedHat"
+
+- include_tasks: manage_lvm.yml
+  when:
+    - lvm_groups is defined
+    - manage_lvm|bool
