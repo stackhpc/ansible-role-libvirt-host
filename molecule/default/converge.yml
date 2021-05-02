@@ -21,7 +21,11 @@
     libvirt_host_networks:
       - name: ansible-virtualization-bridge
         mode: bridge
-        bridge: bridge0
+        bridge: vibr0
+        ip: 192.168.1.1
+        netmask: 255.255.255.0
+        dhcp_start: 192.168.1.100
+        dhcp_end: 192.168.1.200
   tasks:
     - name: "Include ansible-role-libvirt-host"
       include_role:
@@ -58,6 +62,6 @@
 
     - name: Wait until the string "auth" is in the vagrant log
       wait_for:
-        path: /home/vagrant/myvmerr.log
-        search_regex: SSH\sis\sready
+        path: /home/vagrant/myvm.log
+        search_regex: SSH\sto\sbecome\savailable
         timeout: 1000

@@ -8,15 +8,19 @@ driver:
   name: vagrant
   provider:
     name: virtualbox
-
-lint: yamllint . && flake8 && ansible-lint --exclude=meta
+lint: yamllint . && flake8 && ansible-lint --exclude=meta,.cache
 platforms:
   - name: Fedora-Molecule-libvirt-host
     box: fedora/33-cloud-base
-    memory: 8000
-    cpus: 4
+    provider_options:
+      cpus: 4
+      memory: 8092
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--nested-hw-virt', 'on']"
+      - "customize ['storagectl', :id, '--name', 'IDE', '--hostiocache', 'on']"
+    instance_raw_config_args:
+      - "cache.enable :dnf"
+      - "cache.auto_detect = false"
     provider_override_args:
       - "persistent_storage.enabled = true"
       - "persistent_storage.location = 'molecule-libvirt-host.vdi'"

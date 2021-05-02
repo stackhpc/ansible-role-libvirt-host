@@ -14,14 +14,17 @@
 
 - name: Send Ceph secret
   template:
+    mode: 0640
     src: ceph_secret.xml.j2
     dest: "{{ secret_tempfile.path }}"
 
 - name: Define Ceph secret
   command: "virsh secret-define {{ secret_tempfile.path }}"
+  changed_when: false
 
 - name: Set Ceph secret value
   command: "virsh secret-set-value {{ item.name | to_uuid }} {{ item.passphrase }}"
+  changed_when: false
 
 - name: Delete temporary file
   file:
@@ -30,5 +33,3 @@
 
 - name: Flush handlers
   meta: flush_handlers
-
-
