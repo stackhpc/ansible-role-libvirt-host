@@ -35,6 +35,7 @@
       package:
         name:
          - qemu
+         - libvirt
          - ruby-devel
          - gcc
          - qemu-kvm
@@ -44,6 +45,12 @@
          - vagrant
          - daemonize
         state: present
+      become: true
+
+    - name: Start libvirtd
+      service:
+        name: libvirtd
+        state: started
       become: true
 
     - name: Copy vagrant file
@@ -56,7 +63,7 @@
 
     - name: Execute Vagrant as daemon
       command:
-        cmd: "daemonize -e /home/vagrant/myvmerr.log -o /home/vagrant/myvm.log -c /home/vagrant /usr/bin/vagrant up --provider=libvirt"
+        cmd: "daemonize -e /home/vagrant/myvmerr.log -o /home/vagrant/myvm.log -c /home/vagrant -E VAGRANT_LOG=info /usr/bin/vagrant up --provider=libvirt"
         chdir: /home/vagrant
         creates: /home/vagrant/myvm.log
 
