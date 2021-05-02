@@ -1,9 +1,4 @@
 ---
-dependency:
-  name: galaxy
-  options:
-    role-file: requirements.yml
-    roles-path: ../community
 driver:
   name: vagrant
   provider:
@@ -18,6 +13,9 @@ platforms:
       memory: 2048
     provider_raw_config_args:
       - "storage :file, :size => '1G', :device => 'vdb'"
+    instance_raw_config_args:
+      - "cache.enable :dnf"
+      - "cache.auto_detect = false"
 provisioner:
   name: ansible
   config_options:
