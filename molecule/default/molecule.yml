@@ -11,13 +11,13 @@ driver:
 lint: yamllint . && flake8 && ansible-lint --exclude=meta,.cache
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: fedora/33-cloud-base
+    box: tcharl/fedora-33-cgroupv1
     provider_options:
       cpus: 4
       memory: 8092
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--nested-hw-virt', 'on']"
-      - "customize ['storagectl', :id, '--name', 'IDE', '--hostiocache', 'on']"
+      - "customize ['storagectl', :id, '--name', 'IDE Controller', '--hostiocache', 'on']"
     instance_raw_config_args:
       - "cache.enable :dnf"
       - "cache.auto_detect = false"
@@ -37,3 +37,19 @@ verifier:
     PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
   options:
     v: 1
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - dependency
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+ #   - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

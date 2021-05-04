@@ -1,10 +1,11 @@
 ---
 galaxy_info:
-  #role_name: libvirt_host
-  author: Mark Goddard
+  namespace: OsgiliathEnterprise
+  role_name: ansible_role_libvirt_host
+  author: Charlie Mordant on top of Mark Goddard's work
   description: >
     Role to install and configure a host as a Libvirt/KVM hypervisor
-  company: StackHPC Ltd
+  company: Osgiliath Inc on top of StackHPC Ltd achievements (Thanks! I'll PR it)
   license: Apache2
   min_ansible_version: 2.0
   platforms:
