@@ -1,7 +1,7 @@
 <network {% if item.ipv6 is defined %}ipv6='yes'{% endif %} connections='1'>
   <name>{{ item.name }}</name>
   <forward mode='{{ item.mode }}'/>
-  <bridge name='{{ item.bridge }}'{% if item.mode == 'route' or item.mode == 'nat' %} zone='{{item.zone | default("public")}}'{% endif %}/>
+  <bridge name='{{ item.bridge }}'{% if item.mode == 'route' or item.mode == 'nat' %} zone='{{ item.zone | default("public") }}'{% endif %}/>
   {% if item.mode == 'route' or item.mode == 'nat' %}
   <domain name='{{ item.domain|default(item.name) }}'/>
   <ip address='{{ item.ip }}' netmask='{{ item.netmask }}'>

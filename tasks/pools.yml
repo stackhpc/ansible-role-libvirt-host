@@ -62,6 +62,7 @@
     state: active
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  changed_when: false
   become: True
 
 - name: Ensure libvirt storage pools are started on boot

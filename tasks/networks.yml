@@ -22,4 +22,5 @@
     state: active
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   with_items: "{{ libvirt_host_networks }}"
+  changed_when: false
   become: True
