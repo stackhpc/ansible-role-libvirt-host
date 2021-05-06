@@ -32,8 +32,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt -y install python3-setuptools python3 python3-pip
-          sudo pip3 install wheel
-          sudo pip3 install molecule testinfra yamllint ansible-lint flake8 molecule-vagrant
+          pip3 install wheel
+          pip3 install ansible molecule testinfra yamllint ansible-lint flake8 molecule-vagrant
 
       - name: molecule lint
         run: |
