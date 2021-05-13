@@ -31,7 +31,7 @@
   retries: 3
   become: True
   when:
-    - ansible_os_family == "RedHat"
+    - ansible_facts.os_family == "RedHat"
     - libvirt_host_qemu_emulators | length > 0
 
 - name: Ensure QEMU emulator packages are installed
@@ -40,7 +40,7 @@
     state: present
   loop: "{{ libvirt_host_qemu_emulators | flatten(levels=1) }}"
   # NOTE(mgoddard): CentOS 8 does not provide separate packages per-emulator.
-  when: ansible_os_family != "RedHat" or ansible_distribution_major_version | int == 7
+  when: ansible_facts.os_family != "RedHat" or ansible_facts.distribution_major_version | int == 7
   register: result
   until: result is success
   retries: 3

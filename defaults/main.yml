@@ -66,7 +66,7 @@ libvirt_host_uri: >-
 
 # Whether the python3 version of the libvirt python bindings should be
 # installed. If false, the python 2 bindings will be installed.
-libvirt_host_python3: "{{ ansible_python.version.major == 3 }}"
+libvirt_host_python3: "{{ ansible_facts.python.version.major == 3 }}"
 
 # Whether to install and enable the libvirt daemon.
 libvirt_host_install_daemon: true
