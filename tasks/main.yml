@@ -11,8 +11,8 @@
   include: "{{ post_install_path }}"
   with_first_found:
     - files:
-        - post-install-{{ ansible_distribution }}.yml
-        - post-install-{{ ansible_os_family }}.yml
+        - post-install-{{ ansible_facts.distribution }}.yml
+        - post-install-{{ ansible_facts.os_family }}.yml
       skip: true
   loop_control:
     loop_var: post_install_path
