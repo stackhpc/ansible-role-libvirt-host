@@ -1,6 +1,5 @@
 ---
 roles:
   # Install a role from Ansible Galaxy.
-  - name: tcharl.ansible_manage_lvm
+  - name: mrlesmithjr.manage-lvm
     source: https://galaxy.ansible.com
-    path: ../community

@@ -18,9 +18,6 @@ platforms:
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--nested-hw-virt', 'on']"
       - "customize ['storagectl', :id, '--name', 'IDE Controller', '--hostiocache', 'on']"
-    instance_raw_config_args:
-      - "cache.enable :dnf"
-      - "cache.auto_detect = false"
     provider_override_args:
       - "persistent_storage.enabled = true"
       - "persistent_storage.location = 'molecule-libvirt-host.vdi'"
@@ -30,7 +27,7 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ../../..:../../../community
+    ANSIBLE_ROLES_PATH: ${ANSIBLE_ROLES_PATH}:../../../community
 verifier:
   name: testinfra
   env:
