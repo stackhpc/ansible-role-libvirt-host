@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  namespace: OsgiliathEnterprise
+  namespace: tcharl
   role_name: ansible_role_libvirt_host
   author: Charlie Mordant on top of Mark Goddard's work
   description: >
