@@ -1,4 +1,4 @@
-<network {% if item.ip6 is defined %}ipv6='yes'{% endif %} connections='1'>
+<network {% if item.ipv6 is defined %}ipv6='yes'{% endif %} connections='1'>
   <name>{{ item.name }}</name>
   <forward mode='{{ item.mode }}'/>
   <bridge name='{{ item.bridge }}'/>
@@ -16,8 +16,8 @@
     <route address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metric }}' {% endif %}/>
   {% endfor %}
   {% endif %}
-  {% if item.ip6 is defined and item.ip6_prefix is defined %}
-  <ip family='ipv6' address='{{ item.ip6 }}' prefix='{{ item.ip6_prefix }}'>
+  {% if item.ipv6 is defined and item.ipv6_prefix is defined %}
+  <ip family='ipv6' address='{{ item.ipv6 }}' prefix='{{ item.ipv6_prefix }}'>
   </ip>
   {% endif %}
   {% if item.routesv6 is defined %}

@@ -49,8 +49,8 @@ should be a dict containing the following items:
   - `prefix` Prefix of the route, required.
   - `gateway` Gateway of the route, required.
   - `metric` Metric of the route (optional).
-- `ip6` IPv6 address of the virtual bridge (optional).
-- `ip6_prefix` IPv6 prefix of the virtual bridge (optional).
+- `ipv6` IPv6 address of the virtual bridge (optional).
+- `ipv6_prefix` IPv6 prefix of the virtual bridge (optional).
 - `routesv6` Optional list of additionals IPv6 routes defined as following:
   - `address` IPv6 address of the route, required.
   - `prefix` IPv6 previx of the route, required.
