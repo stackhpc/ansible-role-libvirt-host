@@ -13,16 +13,16 @@
   </ip>
   {% if item.routes is defined %}
   {% for route in item.routes %}
-    <route address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metrics }}' {% endif %}/>
+    <route address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metric }}' {% endif %}/>
   {% endfor %}
   {% endif %}
-  {% if item.ip6 is defined and item.item.ip6_prefix is defined %}
+  {% if item.ip6 is defined and item.ip6_prefix is defined %}
   <ip family='ipv6' address='{{ item.ip6 }}' prefix='{{ item.ip6_prefix }}'>
   </ip>
   {% endif %}
-  {% if item.routes6 is defined %}
-  {% for route in item.routes6 %}
-    <route family="ipv6" address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metrics }}' {% endif %}/>
+  {% if item.routesv6 is defined %}
+  {% for route in item.routesv6 %}
+    <route family="ipv6" address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metric }}' {% endif %}/>
   {% endfor %}
   {% endif %}
 {% endif %}
