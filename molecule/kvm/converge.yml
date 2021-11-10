@@ -22,11 +22,9 @@
       - name: ansible-virtualization-bridge
         mode: bridge
         bridge: bridge0
+  roles:
+    - role: tcharl.ansible_role_libvirt_host
   tasks:
-    - name: "Include ansible-role-libvirt-host"
-      include_role:
-        name: "ansible-role-libvirt-host"
-
     - name: "Post converge - Install vagrant"
       package:
         name:

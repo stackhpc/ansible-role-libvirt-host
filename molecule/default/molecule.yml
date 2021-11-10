@@ -15,7 +15,7 @@ lint: |
   ANSIBLE_ROLES_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community ANSIBLE_COLLECTIONS_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community-collections ansible-lint
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: fedora/34-cloud-base
+    box: fedora/35-cloud-base
     provider_options:
       cpus: 4
       memory: 8092
@@ -31,7 +31,7 @@ platforms:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH}:${MOLECULE_PROJECT_DIRECTORY}/..
+    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH}"
 verifier:
   name: testinfra
   env:

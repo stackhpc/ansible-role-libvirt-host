@@ -26,11 +26,9 @@
         netmask: 255.255.255.0
         dhcp_start: 192.168.1.100
         dhcp_end: 192.168.1.200
+  roles:
+    - role: tcharl.ansible_role_libvirt_host
   tasks:
-    - name: "Include ansible-role-libvirt-host"
-      include_role:
-        name: "ansible-role-libvirt-host"
-
     - name: "Post converge - Install vagrant"
       package:
         name:
