@@ -43,12 +43,95 @@
   notify:
     - restart libvirt
 
+- name: Create systemd drop-in directory for socket listen address
+  file:
+    path: "/etc/systemd/system/{{ item.service }}.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+  loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+  when:
+    - item.listen_address is not none
+    - item.listen_address | length > 0
+  loop_control:
+    label: "{{ item.service }}"
+  vars:
+    _libvirt_listen_stream: "{{ item.listen_address }}"
+
+- name: Configure socket listen address
+  template:
+    src: socket.j2
+    dest: "/etc/systemd/system/{{ item.service }}.d/listen-address.conf"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+  when:
+    - item.listen_address is not none
+    - item.listen_address | length > 0
+  loop_control:
+    label: "{{ item.service }}"
+  vars:
+    _libvirt_listen_stream: "{{ item.listen_address }}"
+  notify:
+    - reload systemd
+    - restart libvirt
+
+- name: Create directory for TLS certificates and keys
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  become: true
+  loop: >-
+    {{ _libvirt_tls_certs.values() |
+       selectattr('content') |
+       map(attribute='dest') |
+       map('dirname') |
+       unique }}
+  when:
+    - libvirt_host_tls_listen | bool
+
+- name: Copy TLS certificates and keys
+  copy:
+    content: "{{ _libvirt_loop_item.content }}"
+    dest: "{{ _libvirt_loop_item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ _libvirt_loop_item.mode }}"
+  become: true
+  # NOTE: Loop over keys of _libvirt_tls_certs to avoid leaking the key
+  # contents.
+  loop: "{{ _libvirt_tls_certs.keys() }}"
+  when:
+    - libvirt_host_tls_listen | bool
+    - _libvirt_loop_item.content
+  vars:
+    _libvirt_loop_item: "{{ _libvirt_tls_certs[item] }}"
+  notify: restart libvirt
+
 - name: Flush handlers
   meta: flush_handlers
 
 - name: Ensure the libvirt daemon is started and enabled
   service:
-    name: libvirtd
-    state: started
-    enabled: yes
+    name: "{{ item.service }}"
+    state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
+    enabled: "{{ item.enabled | bool }}"
   become: True
+  loop: "{{ _libvirt_services }}"
+  loop_control:
+    label: "{{ item.service }}"
+  vars:
+    _libvirt_services:
+      - service: libvirtd-tcp.socket
+        enabled: "{{ libvirt_host_tcp_listen | bool }}"
+      - service: libvirtd-tls.socket
+        enabled: "{{ libvirt_host_tls_listen | bool }}"
+      - service: libvirtd
+        enabled: true

@@ -115,6 +115,28 @@ option names to values. Default is an empty dict.
 `libvirt_host_qemu_conf`: Configuration for `qemu.conf`. Dict mapping option
 names to values. Default is an empty dict.
 
+`libvirt_host_tcp_listen`: Whether to enable the systemd TCP socket unit.
+Default is `false`.
+
+`libvirt_host_tcp_listen_address`: Systemd TCP socket ListenStream. See man
+systemd.socket for format. Default is unset.
+
+`libvirt_host_tls_listen`: Whether to enable the systemd TLS socket unit.
+Default is `false`.
+
+`libvirt_host_tls_listen_address`: Systemd TLS socket ListenStream. See man
+systemd.socket for format. Default is unset.
+
+`libvirt_host_tls_server_cert`: TLS server certificate. Default is unset.
+
+`libvirt_host_tls_server_key`: TLS server key. Default is unset.
+
+`libvirt_host_tls_client_cert`: TLS client certificate. Default is unset.
+
+`libvirt_host_tls_client_key`: TLS client key. Default is unset.
+
+`libvirt_host_tls_cacert`: TLS CA certificate. Default is unset.
+
 Dependencies
 ------------
 

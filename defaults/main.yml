@@ -83,3 +83,19 @@ libvirt_host_libvirtd_conf: {}
 libvirt_host_qemu_conf_enabled: true
 # Configuration for qemu.conf. Dict mapping option names to values.
 libvirt_host_qemu_conf: {}
+
+# Whether to enable the systemd TCP socket unit.
+libvirt_host_tcp_listen: false
+# Systemd TCP socket ListenStream. See man systemd.socket for format.
+libvirt_host_tcp_listen_address:
+
+# Whether to enable the systemd TLS socket unit.
+libvirt_host_tls_listen: false
+# Systemd TLS socket ListenStream. See man systemd.socket for format.
+libvirt_host_tls_listen_address:
+# TLS server and client certificates.
+libvirt_host_tls_server_cert:
+libvirt_host_tls_server_key:
+libvirt_host_tls_client_cert:
+libvirt_host_tls_client_key:
+libvirt_host_tls_cacert:

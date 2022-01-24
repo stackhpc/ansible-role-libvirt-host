@@ -1,9 +1,34 @@
 ---
 
-- name: restart libvirt
+- name: reload systemd
+  systemd:
+    daemon_reload: true
+  become: true
+
+# The socket units cannot be stopped or started if libvirt is running.
+- name: stop libvirt
   service:
     name: libvirtd
-    state: restarted
+    state: stopped
+  become: true
+  listen:
+    - restart libvirt
+
+- name: start libvirtd sockets
+  service:
+    name: "{{ item.service }}"
+    state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
+  become: true
+  loop: "{{ _libvirt_socket_services }}"
+  loop_control:
+    label: "{{ item.service }}"
+  listen:
+    - restart libvirt
+
+- name: start libvirt
+  service:
+    name: libvirtd
+    state: started
   become: true
 
 - name: reload libvirt qemu apparmor profile template

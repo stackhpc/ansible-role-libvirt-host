@@ -1,0 +1,32 @@
+---
+# List of socket services.
+_libvirt_socket_services:
+  - service: libvirtd-tcp.socket
+    enabled: "{{ libvirt_host_tcp_listen | bool }}"
+    listen_address: "{{ libvirt_host_tcp_listen_address }}"
+  - service: libvirtd-tls.socket
+    enabled: "{{ libvirt_host_tls_listen | bool }}"
+    listen_address: "{{ libvirt_host_tls_listen_address }}"
+
+# List of TLS certificates.
+_libvirt_tls_certs:
+  servercert:
+    content: "{{ libvirt_host_tls_server_cert }}"
+    dest: /etc/pki/libvirt/servercert.pem
+    mode: "0600"
+  serverkey:
+    content: "{{ libvirt_host_tls_server_key }}"
+    dest: /etc/pki/libvirt/private/serverkey.pem
+    mode: "0600"
+  clientcert:
+    content: "{{ libvirt_host_tls_client_cert }}"
+    dest: /etc/pki/libvirt/clientcert.pem
+    mode: "0600"
+  clientkey:
+    content: "{{ libvirt_host_tls_client_key }}"
+    dest: /etc/pki/libvirt/private/clientkey.pem
+    mode: "0600"
+  cacert:
+    content: "{{ libvirt_host_tls_cacert }}"
+    dest: /etc/pki/CA/cacert.pem
+    mode: "0644"
