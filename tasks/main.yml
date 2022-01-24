@@ -1,14 +1,16 @@
 ---
-- include: prelude.yml
-- include: validate.yml
-- include: install-daemon.yml
+- import_tasks: prelude.yml
+- import_tasks: validate.yml
+- name: Include install-daemon.yml
+  include_tasks: install-daemon.yml
   when: libvirt_host_install_daemon | bool
-- include: install-client.yml
+- name: Include install-client.yml
+  include_tasks: install-client.yml
   when:
     - not libvirt_host_install_daemon | bool
     - libvirt_host_install_client | bool
 - name: Run post-install stage
-  include: "{{ post_install_path }}"
+  include_tasks: "{{ post_install_path }}"
   with_first_found:
     - files:
         - post-install-{{ ansible_facts.distribution }}.yml
@@ -16,7 +18,12 @@
       skip: true
   loop_control:
     loop_var: post_install_path
-- include: config.yml
+- name: Include config.yml
+  include_tasks: config.yml
   when: libvirt_host_install_daemon | bool
-- include: pools.yml
-- include: networks.yml
+- name: Include pools.yml
+  include_tasks: pools.yml
+  when: libvirt_host_pools | length > 0
+- name: Include networks.yml
+  include_tasks: networks.yml
+  when: libvirt_host_networks | length > 0

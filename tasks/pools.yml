@@ -7,7 +7,8 @@
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
-- include_tasks:
+- name: include rbd.yml
+  include_tasks:
     file: rbd.yml
     apply:
       become: True
