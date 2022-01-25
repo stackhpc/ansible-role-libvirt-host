@@ -73,3 +73,13 @@ libvirt_host_install_daemon: true
 
 # Whether to install and enable the libvirt client.
 libvirt_host_install_client: true
+
+# Whether to configure libvirtd.conf.
+libvirt_host_libvirtd_conf_enabled: true
+# Configuration for libvirtd.conf. Dict mapping option names to values.
+libvirt_host_libvirtd_conf: {}
+
+# Whether to configure qemu.conf.
+libvirt_host_qemu_conf_enabled: true
+# Configuration for qemu.conf. Dict mapping option names to values.
+libvirt_host_qemu_conf: {}

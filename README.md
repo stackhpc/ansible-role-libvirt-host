@@ -103,6 +103,18 @@ daemon. Default is `true`.
 `libvirt_host_install_client`: Whether to install and enable the libvirt
 client. Default is `true`.
 
+`libvirt_host_libvirtd_conf_enabled`: Whether to configure `libvirtd.conf`.
+Default is `true`.
+
+`libvirt_host_libvirtd_conf`: Configuration for `libvirtd.conf`. Dict mapping
+option names to values. Default is an empty dict.
+
+`libvirt_host_qemu_conf_enabled`: Whether to configure `qemu.conf`. Default is
+`true`.
+
+`libvirt_host_qemu_conf`: Configuration for `qemu.conf`. Dict mapping option
+names to values. Default is an empty dict.
+
 Dependencies
 ------------
 

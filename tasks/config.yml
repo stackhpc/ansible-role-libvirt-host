@@ -1,16 +1,6 @@
 ---
 # Configure services - runs after the install stage
 
-- name: Set socket directory in libvirtd.conf
-  lineinfile:
-    path: /etc/libvirt/libvirtd.conf
-    insertafter: '^#unix_sock_dir ='
-    regexp: '^unix_sock_dir ='
-    line: unix_sock_dir = "{{ libvirt_host_socket_dir }}"
-  become: true
-  when: libvirt_host_socket_dir | length > 0
-  notify: restart libvirt
-
 - name: Create directory for libvirt socket
   file:
     state: directory
@@ -28,6 +18,28 @@
   loop_control:
     loop_var: rule
   when: rule.condition
+  notify:
+    - restart libvirt
+
+- name: Ensure configuration files exist
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  loop: "{{ _libvirt_config_files | selectattr('enabled') }}"
+  loop_control:
+    label: "{{ item.dest | basename }}"
+  vars:
+    _libvirt_config_files:
+      - src: libvirtd.conf.j2
+        dest: /etc/libvirt/libvirtd.conf
+        enabled: "{{ libvirt_host_libvirtd_conf_enabled | bool }}"
+      - src: qemu.conf.j2
+        dest: /etc/libvirt/qemu.conf
+        enabled: "{{ libvirt_host_qemu_conf_enabled | bool }}"
   notify:
     - restart libvirt
 
