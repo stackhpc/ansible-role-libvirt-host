@@ -103,6 +103,12 @@ daemon. Default is `true`.
 `libvirt_host_install_client`: Whether to install and enable the libvirt
 client. Default is `true`.
 
+`libvirt_host_extra_daemon_packages`: List of additional packages to install on
+libvirt daemon hosts.
+
+`libvirt_host_extra_client_packages`: List of additional packages to install on
+libvirt client hosts.
+
 `libvirt_host_libvirtd_conf_enabled`: Whether to configure `libvirtd.conf`.
 Default is `true`.
 

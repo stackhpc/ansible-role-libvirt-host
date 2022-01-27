@@ -1,4 +1,17 @@
 ---
+# List of all packages to install for daemon hosts.
+libvirt_host_libvirt_packages: >
+  {{ libvirt_host_libvirt_packages_default +
+     libvirt_host_extra_daemon_packages +
+     libvirt_host_libvirt_packages_client +
+     (libvirt_host_packages_efi if libvirt_host_enable_efi_support else []) | unique
+  }}
+
+# List of all packages to install for client hosts.
+libvirt_host_libvirt_packages_client: >-
+  {{ libvirt_host_libvirt_packages_client_default +
+     libvirt_host_extra_client_packages }}
+
 # List of socket services.
 _libvirt_socket_services:
   - service: libvirtd-tcp.socket
