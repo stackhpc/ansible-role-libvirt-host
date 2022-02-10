@@ -17,9 +17,15 @@ libvirt_host_libvirt_packages_client:
   - "{{ 'python3-lxml' if libvirt_host_python3 | bool else 'python-lxml' }}"
 
 # Packages that are only necessary if you require EFI support
-libvirt_host_packages_efi:
-  - edk2.git-ovmf-x64 # Official OVMF package doesn't boot (CentOS 7.5)
-  - qemu-kvm-ev # Need smm support for secure boot
+libvirt_host_packages_efi_by_version:
+  7:
+    - edk2.git-ovmf-x64 # Official OVMF package doesn't boot (CentOS 7.5)
+    - qemu-kvm-ev # Need smm support for secure boot
+  8:
+    - edk2-ovmf
+
+libvirt_host_packages_efi: >-
+  {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
 
 # List of all packages to install
 libvirt_host_libvirt_packages: >
@@ -33,19 +39,22 @@ libvirt_host_packages_rbd_volume_pool:
   - libvirt-daemon-driver-storage-rbd
   - qemu-kvm-block-rbd
 
-libvirt_host_custom_yum_repos_efi:
-  # Add custom repository as OVMF package seems to be broken
-  - name: qemu-firmware-jenkins
-    description: upstream OVMF firmware images
-    baseurl: https://www.kraxel.org/repos/jenkins/
-    gpgcheck: no
-  # Need an updated version of qemu with smm support
-  - name: centos-qemu-ev
-    description: CentOS-$releasever - QEMU EV
-    baseurl: http://mirror.centos.org/$contentdir/$releasever/virt/$basearch/kvm-common/
-    gpgcheck: yes
+libvirt_host_custom_yum_repos_efi_by_version:
+  7:
+    # Add custom repository as OVMF package seems to be broken
+    - name: qemu-firmware-jenkins
+      description: upstream OVMF firmware images
+      baseurl: https://www.kraxel.org/repos/jenkins/
+      gpgcheck: no
+    # Need an updated version of qemu with smm support
+    - name: centos-qemu-ev
+      description: CentOS-$releasever - QEMU EV
+      baseurl: http://mirror.centos.org/$contentdir/$releasever/virt/$basearch/kvm-common/
+      gpgcheck: yes
+  8: []
 
-libvirt_host_custom_yum_repos: "{{ libvirt_host_custom_yum_repos_efi if libvirt_host_enable_efi_support else [] | unique }}"
+libvirt_host_custom_yum_repos: >-
+  {{ libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int] }}
 
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules:
