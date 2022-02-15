@@ -105,3 +105,6 @@ libvirt_host_tls_server_key:
 libvirt_host_tls_client_cert:
 libvirt_host_tls_client_key:
 libvirt_host_tls_cacert:
+
+# Whether to configure AppArmor for directory storage pools.
+libvirt_host_configure_apparmor: "{{ libvirt_host_install_daemon | bool }}"

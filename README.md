@@ -143,6 +143,9 @@ systemd.socket for format. Default is unset.
 
 `libvirt_host_tls_cacert`: TLS CA certificate. Default is unset.
 
+`libvirt_host_configure_apparmor`: Whether to configure AppArmor for directory
+storage pools.
+
 Dependencies
 ------------
 
