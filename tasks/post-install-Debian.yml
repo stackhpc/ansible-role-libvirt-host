@@ -33,7 +33,7 @@
     line: "  {{ item.path }}/** rwk,"
   become: true
   when:
-    - libvirt_host_install_daemon | bool
+    - libvirt_host_configure_apparmor | bool
     - ansible_facts.apparmor.status | default == 'enabled'
     - item.type == "dir"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"

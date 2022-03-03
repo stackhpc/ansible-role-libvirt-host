@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+{% if libvirt_host_socket_dir | length > 0 %}
+unix_sock_dir = "{{ libvirt_host_socket_dir }}"
+{% endif %}
+{% for key, value in libvirt_host_libvirtd_conf.items() %}
+{# While the value is not JSON formatted, it is close enough - strings need to be double quoted. #}
+{{ key }} = {{ value | to_json }}
+{% endfor %}

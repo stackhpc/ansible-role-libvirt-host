@@ -103,6 +103,49 @@ daemon. Default is `true`.
 `libvirt_host_install_client`: Whether to install and enable the libvirt
 client. Default is `true`.
 
+`libvirt_host_extra_daemon_packages`: List of additional packages to install on
+libvirt daemon hosts.
+
+`libvirt_host_extra_client_packages`: List of additional packages to install on
+libvirt client hosts.
+
+`libvirt_host_libvirtd_conf_enabled`: Whether to configure `libvirtd.conf`.
+Default is `true`.
+
+`libvirt_host_libvirtd_conf`: Configuration for `libvirtd.conf`. Dict mapping
+option names to values. Default is an empty dict.
+
+`libvirt_host_qemu_conf_enabled`: Whether to configure `qemu.conf`. Default is
+`true`.
+
+`libvirt_host_qemu_conf`: Configuration for `qemu.conf`. Dict mapping option
+names to values. Default is an empty dict.
+
+`libvirt_host_tcp_listen`: Whether to enable the systemd TCP socket unit.
+Default is `false`.
+
+`libvirt_host_tcp_listen_address`: Systemd TCP socket ListenStream. See man
+systemd.socket for format. Default is unset.
+
+`libvirt_host_tls_listen`: Whether to enable the systemd TLS socket unit.
+Default is `false`.
+
+`libvirt_host_tls_listen_address`: Systemd TLS socket ListenStream. See man
+systemd.socket for format. Default is unset.
+
+`libvirt_host_tls_server_cert`: TLS server certificate. Default is unset.
+
+`libvirt_host_tls_server_key`: TLS server key. Default is unset.
+
+`libvirt_host_tls_client_cert`: TLS client certificate. Default is unset.
+
+`libvirt_host_tls_client_key`: TLS client key. Default is unset.
+
+`libvirt_host_tls_cacert`: TLS CA certificate. Default is unset.
+
+`libvirt_host_configure_apparmor`: Whether to configure AppArmor for directory
+storage pools.
+
 Dependencies
 ------------
 
