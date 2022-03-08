@@ -35,5 +35,10 @@ libvirt_host_packages_rbd_volume_pool:
   - libvirt-daemon-driver-storage-rbd
   - qemu-block-extra
 
+# Packages for SASL authentication support.
+libvirt_host_packages_sasl:
+  - libsasl2-modules-gssapi-mit
+  - sasl2-bin
+
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules: []

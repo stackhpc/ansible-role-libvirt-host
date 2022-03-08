@@ -32,6 +32,14 @@ libvirt_host_packages_rbd_volume_pool:
   - libvirt-daemon-driver-storage-rbd
   - qemu-kvm-block-rbd
 
+# Packages for SASL authentication support.
+libvirt_host_packages_sasl:
+  - cyrus-sasl
+  - "{{ 'cyrus-sasl-gssapi' if 'gssapi' in libvirt_host_sasl_mech_list | map('lower') | list else '' }}"
+  - "{{ 'cyrus-sasl-md5' if 'digest-md5' in libvirt_host_sasl_mech_list | map('lower') | list else '' }}"
+  - "{{ 'cyrus-sasl-plain' if 'plain' in libvirt_host_sasl_mech_list | map('lower') | list else '' }}"
+  - "{{ 'cyrus-sasl-scram' if 'scram' in libvirt_host_sasl_mech_list | map('lower') | join(' ') else '' }}"
+
 libvirt_host_custom_yum_repos_efi_by_version:
   7:
     # Add custom repository as OVMF package seems to be broken

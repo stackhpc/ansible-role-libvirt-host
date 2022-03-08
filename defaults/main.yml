@@ -90,6 +90,48 @@ libvirt_host_qemu_conf_enabled: true
 # Configuration for qemu.conf. Dict mapping option names to values.
 libvirt_host_qemu_conf: {}
 
+# Whether to enable SASL authentication support.
+libvirt_host_enable_sasl_support: false
+
+# Whether to configure SASL authentication (/etc/sasl2/libvirt.conf).
+libvirt_host_sasl_conf_enabled: "{{ libvirt_host_enable_sasl_support | bool }}"
+# Configuration for SASL authentication (/etc/sasl2/libvirt.conf). String.
+libvirt_host_sasl_conf: |
+  mech_list: {{ libvirt_host_sasl_mech_list | join(' ') }}
+  sasldb_path: /etc/libvirt/passwd.db
+# List of enabled libvirt SASL authentication mechanisms.
+libvirt_host_sasl_mech_list:
+  - "{{ 'SCRAM-SHA-256' if libvirt_host_tls_listen | bool else 'DIGEST-MD5' }}"
+
+# List of SASL authentication credentials to create. Each item is a dict
+# containing "username" and "password" items.
+libvirt_host_sasl_credentials:
+  - username: "{{ libvirt_host_sasl_authname }}"
+    password: "{{ libvirt_host_sasl_password }}"
+# Username for SASL authentication.
+libvirt_host_sasl_authname: libvirt
+# Password for SASL authentication.
+libvirt_host_sasl_password:
+
+# Whether to configure SASL authentication credentials (/etc/libvirt/auth.conf).
+libvirt_host_sasl_auth_conf_enabled: "{{ libvirt_host_enable_sasl_support | bool }}"
+# Configuration for SASL authentication credentials (/etc/libvirt/auth.conf). String.
+libvirt_host_sasl_auth_conf: |
+  [credentials-default]
+  authname={{ libvirt_host_sasl_authname }}
+  password={{ libvirt_host_sasl_password }}
+
+  [auth-libvirt-default]
+  credentials=default
+# Name of file to write SASL authentication credentials to.
+libvirt_host_sasl_auth_conf_filename: "/etc/libvirt/auth.conf"
+# Owner of file to write SASL authentication credentials to.
+libvirt_host_sasl_auth_conf_owner: "root"
+# Group of file to write SASL authentication credentials to.
+libvirt_host_sasl_auth_conf_group: "root"
+# Mode of file to write SASL authentication credentials to.
+libvirt_host_sasl_auth_conf_mode: "0600"
+
 # Whether to enable the systemd TCP socket unit.
 libvirt_host_tcp_listen: false
 # Systemd TCP socket ListenStream. See man systemd.socket for format.

@@ -1,0 +1,20 @@
+---
+- name: Ensure client configuration files exist
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  become: true
+  loop: "{{ _libvirt_client_config_files | selectattr('enabled') }}"
+  loop_control:
+    label: "{{ item.dest | basename }}"
+  vars:
+    _libvirt_client_config_files:
+      - src: auth.conf.j2
+        dest: "{{ libvirt_host_sasl_auth_conf_filename }}"
+        enabled: "{{ libvirt_host_sasl_auth_conf_enabled | bool }}"
+        owner: "{{ libvirt_host_sasl_auth_conf_owner }}"
+        group: "{{ libvirt_host_sasl_auth_conf_group }}"
+        mode: "{{ libvirt_host_sasl_auth_conf_mode }}"

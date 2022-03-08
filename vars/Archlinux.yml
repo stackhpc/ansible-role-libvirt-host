@@ -21,5 +21,9 @@ libvirt_host_packages_rbd_volume_pool:
   - libvirt-storage-rbd
   - qemu-block-rbd
 
+# Packages for SASL authentication support.
+libvirt_host_packages_sasl:
+  - cyrus-sasl
+
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules: []
