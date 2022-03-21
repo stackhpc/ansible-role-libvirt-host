@@ -21,6 +21,9 @@
 - name: Include config.yml
   include_tasks: config.yml
   when: libvirt_host_install_daemon | bool
+- name: Include client-config.yml
+  include_tasks: client-config.yml
+  when: libvirt_host_install_client | bool
 - name: Include pools.yml
   include_tasks: pools.yml
   when: libvirt_host_pools | length > 0

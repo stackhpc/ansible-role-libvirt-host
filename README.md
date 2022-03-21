@@ -121,6 +121,50 @@ option names to values. Default is an empty dict.
 `libvirt_host_qemu_conf`: Configuration for `qemu.conf`. Dict mapping option
 names to values. Default is an empty dict.
 
+`libvirt_host_enable_sasl_support`: Whether to enable SASL authentication
+support. Default is `false`.
+
+`libvirt_host_sasl_conf_enabled`: Whether to configure SASL authentication
+(`/etc/sasl2/libvirt.conf`). Default is the same as
+`libvirt_host_enable_sasl_support`.
+
+`libvirt_host_sasl_conf`: Configuration for SASL authentication
+(`/etc/sasl2/libvirt.conf`). String.
+
+`libvirt_host_sasl_mech_list`: List of enabled libvirt SASL authentication
+mechanisms. Default is `["SCRAM-SHA-256"]` when `libvirt_host_tls_listen` is
+`true`, otherwise `["DIGEST-MD5"]`.
+
+`libvirt_host_sasl_credentials`: List of SASL authentication credentials to
+create.  Each item is a dict containing `username` and `password` items.
+Default is a single item list containing `libvirt_host_sasl_authname` and
+`libvirt_host_sasl_password`.
+
+`libvirt_host_sasl_authname`: Username for SASL authentication. Default is
+`libvirt`.
+
+`libvirt_host_sasl_password`: Password for SASL authentication. Default is
+unset.
+
+`libvirt_host_sasl_auth_conf_enabled`: Whether to configure SASL authentication
+credentials (`/etc/libvirt/auth.conf`). Default is the same as
+`libvirt_host_enable_sasl_support`.
+
+`libvirt_host_sasl_auth_conf`: Configuration for SASL authentication
+credentials (`/etc/libvirt/auth.conf`). String.
+
+`libvirt_host_sasl_auth_conf_filename`: Name of file to write SASL
+authentication credentials to. Default is `"/etc/libvirt/auth.conf"`.
+
+`libvirt_host_sasl_auth_conf_owner`: Owner of file to write SASL
+authentication credentials to. Default is `"root"`.
+
+`libvirt_host_sasl_auth_conf_group`: Group of file to write SASL
+authentication credentials to. Default is `"root"`.
+
+`libvirt_host_sasl_auth_conf_mode`: Mode of file to write SASL
+authentication credentials to. Default is `"0600"`.
+
 `libvirt_host_tcp_listen`: Whether to enable the systemd TCP socket unit.
 Default is `false`.
 

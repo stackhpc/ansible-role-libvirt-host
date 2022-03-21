@@ -27,3 +27,12 @@
   when:
     - libvirt_host_require_vt | bool
     - not libvirt_host_vt_enabled
+
+- name: Fail if SASL password is not defined
+  fail:
+    msg: >
+      One or more SASL passwords in 'libvirt_host_sasl_credentials' are not
+      defined
+  when:
+    - libvirt_host_enable_sasl_support | bool
+    - libvirt_host_sasl_credentials | rejectattr('password') | length > 0

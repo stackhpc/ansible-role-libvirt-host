@@ -40,6 +40,9 @@
       - src: qemu.conf.j2
         dest: /etc/libvirt/qemu.conf
         enabled: "{{ libvirt_host_qemu_conf_enabled | bool }}"
+      - src: sasl.conf.j2
+        dest: /etc/sasl2/libvirt.conf
+        enabled: "{{ libvirt_host_sasl_conf_enabled | bool }}"
   notify:
     - restart libvirt
 
@@ -114,6 +117,19 @@
   vars:
     _libvirt_loop_item: "{{ _libvirt_tls_certs[item] }}"
   notify: restart libvirt
+
+- name: Ensure libvirt SASL user exists
+  shell:
+    cmd: >
+      set -o pipefail &&
+      echo {{ item.password }} |
+      saslpasswd2 -c -p -a libvirt {{ item.username }}
+    executable: /bin/bash
+  become: true
+  no_log: true
+  changed_when: true
+  loop: "{{ libvirt_host_sasl_credentials }}"
+  when: libvirt_host_enable_sasl_support | bool
 
 - name: Flush handlers
   meta: flush_handlers
