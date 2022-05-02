@@ -2,7 +2,7 @@
   <name>{{ item.name }}</name>
   {% if item.mode is defined %}<forward mode='{{ item.mode }}'/>{% endif %}
   <bridge name='{{ item.bridge }}'/>
-{% if item.mode is defined %}
+{% if item.mode is not defined or item.mode in ['route', 'nat'] %}
   <domain name='{{ item.domain|default(item.name) }}'/>
   <ip address='{{ item.ip }}' netmask='{{ item.netmask }}'>
   {% if item.dhcp_start is defined and item.dhcp_end is defined %}
@@ -24,19 +24,6 @@
   {% for route in item.routesv6 %}
     <route family="ipv6" address="{{ route.address }}" prefix="{{ route.prefix }}" gateway="{{ route.gateway }}" {% if route.metric is defined %} metric='{{ route.metric }}' {% endif %}/>
   {% endfor %}
-  {% endif %}
-{% else %}
-  <domain name='{{ item.domain|default(item.name) }}'/>
-  <ip address='{{ item.ip }}' netmask='{{ item.netmask }}'>
-  {% if item.dhcp_start is defined and item.dhcp_end is defined %}
-  <dhcp>
-    <range start='{{ item.dhcp_start }}' end='{{ item.dhcp_end }}'/>
-  </dhcp>
-  {% endif %}
-  </ip>
-  {% if item.ipv6 is defined and item.ipv6_prefix is defined %}
-  <ip family='ipv6' address='{{ item.ipv6 }}' prefix='{{ item.ipv6_prefix }}'>
-  </ip>
   {% endif %}
 {% endif %}
 </network>
