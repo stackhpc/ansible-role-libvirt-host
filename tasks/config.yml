@@ -29,7 +29,7 @@
     group: root
     mode: 0644
   become: true
-  loop: "{{ _libvirt_config_files | selectattr('enabled') }}"
+  loop: "{{ _libvirt_config_files | selectattr('enabled') | list }}"
   loop_control:
     label: "{{ item.dest | basename }}"
   vars:
@@ -54,7 +54,7 @@
     group: root
     mode: 0755
   become: true
-  loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+  loop: "{{ _libvirt_socket_services | selectattr('enabled') | list }}"
   when:
     - item.listen_address is not none
     - item.listen_address | length > 0
@@ -71,7 +71,7 @@
     group: root
     mode: 0644
   become: true
-  loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+  loop: "{{ _libvirt_socket_services | selectattr('enabled') | list }}"
   when:
     - item.listen_address is not none
     - item.listen_address | length > 0
@@ -96,7 +96,7 @@
        selectattr('content') |
        map(attribute='dest') |
        map('dirname') |
-       unique }}
+       unique | list }}
   when:
     - libvirt_host_tls_listen | bool
 
@@ -110,7 +110,7 @@
   become: true
   # NOTE: Loop over keys of _libvirt_tls_certs to avoid leaking the key
   # contents.
-  loop: "{{ _libvirt_tls_certs.keys() }}"
+  loop: "{{ _libvirt_tls_certs.keys() | list }}"
   when:
     - libvirt_host_tls_listen | bool
     - _libvirt_loop_item.content

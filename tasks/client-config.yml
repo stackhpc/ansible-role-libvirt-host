@@ -7,7 +7,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
   become: true
-  loop: "{{ _libvirt_client_config_files | selectattr('enabled') }}"
+  loop: "{{ _libvirt_client_config_files | selectattr('enabled') | list }}"
   loop_control:
     label: "{{ item.dest | basename }}"
   vars:
