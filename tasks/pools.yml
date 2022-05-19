@@ -18,8 +18,7 @@
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
-- name: include rbd.yml
-  ansible.builtin.include_tasks:
+- ansible.builtin.include_tasks:
     file: rbd.yml
     apply:
       become: True

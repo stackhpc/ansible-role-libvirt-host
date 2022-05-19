@@ -30,6 +30,8 @@
     name: libvirtd
     state: started
   become: true
+  listen:
+    - restart libvirt
 
 - name: reload libvirt qemu apparmor profile template
   ansible.builtin.command: apparmor_parser -r /etc/apparmor.d/libvirt/TEMPLATE.qemu
