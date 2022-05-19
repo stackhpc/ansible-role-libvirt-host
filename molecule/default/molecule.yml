@@ -12,7 +12,7 @@ lint: |
   set -e
   yamllint .
   flake8
-  ANSIBLE_ROLES_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community ANSIBLE_COLLECTIONS_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community-collections ansible-lint
+  ANSIBLE_ROLES_PATH=${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH} ANSIBLE_COLLECTIONS_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community-collections:${ANSIBLE_COLLECTIONS_PATH} ansible-lint
 platforms:
   - name: Fedora-Molecule-libvirt-host
     box: fedora/35-cloud-base

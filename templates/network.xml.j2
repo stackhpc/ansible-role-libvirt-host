@@ -1,8 +1,8 @@
 <network {% if item.ipv6 is defined %}ipv6='yes'{% endif %} connections='1'>
   <name>{{ item.name }}</name>
-  <forward mode='{{ item.mode }}'/>
+  {% if item.mode is defined %}<forward mode='{{ item.mode }}'/>{% endif %}
   <bridge name='{{ item.bridge }}'{% if item.zone is defined %} zone='{{ item.zone }}'{% endif %}/>
-{% if item.mode == 'route' or item.mode == 'nat' %}
+{% if item.mode is not defined or item.mode in ['route', 'nat'] %}
   <domain name='{{ item.domain|default(item.name) }}'/>
   <ip address='{{ item.ip }}' netmask='{{ item.netmask }}'>
   {% if item.dhcp_start is defined and item.dhcp_end is defined %}
