@@ -1,6 +1,6 @@
 ---
 - name: Include lvm role to create VG
-  include_role:
+  ansible.builtin.include_role:
     name: mrlesmithjr.manage-lvm
   when:
     - manage_lvm is defined
@@ -8,7 +8,7 @@
     - libvirt_host_pools |  map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
 
 - name: Ensure libvirt dir storage pool directories exist
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
@@ -19,7 +19,7 @@
   become: True
 
 - name: include rbd.yml
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: rbd.yml
     apply:
       become: True
@@ -27,7 +27,7 @@
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
 
 - name: Ensure libvirt storage pools are defined
-  virt_pool:
+  community.libvirt.virt_pool:
     name: "{{ item.name }}"
     command: define
     xml: "{{ item.xml | default(lookup('template', 'pool.xml.j2')) }}"
@@ -36,7 +36,7 @@
   become: True
 
 - name: Check libvirt directory storage pool status
-  virt_pool:
+  community.libvirt.virt_pool:
     name: "{{ item.name }}"
     command: status
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
@@ -46,7 +46,7 @@
   register: pool_status
 
 - name: Ensure libvirt directory storage pools are built
-  virt_pool:
+  community.libvirt.virt_pool:
     name: "{{ item.item.name }}"
     command: build
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
@@ -57,7 +57,7 @@
   become: True
 
 - name: Ensure libvirt storage pools are active
-  virt_pool:
+  community.libvirt.virt_pool:
     name: "{{ item.name }}"
     state: active
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
@@ -65,7 +65,7 @@
   become: True
 
 - name: Ensure libvirt storage pools are started on boot
-  virt_pool:
+  community.libvirt.virt_pool:
     name: "{{ item.name }}"
     autostart: yes
     uri: "{{ libvirt_host_uri | default(omit, true) }}"

@@ -1,35 +1,35 @@
 ---
 
 - name: Install additional packages for rbd support
-  package:
+  ansible.builtin.package:
     name: "{{ libvirt_host_packages_rbd_volume_pool | flatten(levels=1) }}"
     state: present
   notify: restart libvirt
 
 - name: Create temporary file for Ceph secret
-  tempfile:
+  ansible.builtin.tempfile:
     state: file
     suffix: .xml
   register: secret_tempfile
 
 - name: Send Ceph secret
-  template:
+  ansible.builtin.template:
     mode: 0640
     src: ceph_secret.xml.j2
     dest: "{{ secret_tempfile.path }}"
 
 - name: Define Ceph secret
-  command: "virsh secret-define {{ secret_tempfile.path }}"
+  ansible.builtin.command: "virsh secret-define {{ secret_tempfile.path }}"
   changed_when: false
 
 - name: Set Ceph secret value
-  command: "virsh secret-set-value {{ item.name | to_uuid }} {{ item.passphrase }}"
+  ansible.builtin.command: "virsh secret-set-value {{ item.name | to_uuid }} {{ item.passphrase }}"
   changed_when: false
 
 - name: Delete temporary file
-  file:
+  ansible.builtin.file:
     path: "{{ secret_tempfile.path }}"
     state: absent
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers

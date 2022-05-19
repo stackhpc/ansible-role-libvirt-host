@@ -2,7 +2,7 @@
 # Configure services - runs after the install stage
 
 - name: Create directory for libvirt socket
-  file:
+  ansible.builtin.file:
     state: directory
     path: "{{ libvirt_host_socket_dir }}"
     owner: root
@@ -12,7 +12,7 @@
   when: libvirt_host_socket_dir | length > 0
 
 - name: Process lineinfile rules
-  lineinfile: "{{ rule.args }}"
+  ansible.builtin.lineinfile: "{{ rule.args }}"
   become: true
   loop: "{{ libvirt_host_lineinfile_extra_rules | default([]) }}"
   loop_control:
@@ -22,7 +22,7 @@
     - restart libvirt
 
 - name: Ensure configuration files exist
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
@@ -47,7 +47,7 @@
     - restart libvirt
 
 - name: Create systemd drop-in directory for socket listen address
-  file:
+  ansible.builtin.file:
     path: "/etc/systemd/system/{{ item.service }}.d"
     state: directory
     owner: root
@@ -64,7 +64,7 @@
     _libvirt_listen_stream: "{{ item.listen_address }}"
 
 - name: Configure socket listen address
-  template:
+  ansible.builtin.template:
     src: socket.j2
     dest: "/etc/systemd/system/{{ item.service }}.d/listen-address.conf"
     owner: root
@@ -84,7 +84,7 @@
     - restart libvirt
 
 - name: Create directory for TLS certificates and keys
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: root
@@ -101,7 +101,7 @@
     - libvirt_host_tls_listen | bool
 
 - name: Copy TLS certificates and keys
-  copy:
+  ansible.builtin.copy:
     content: "{{ _libvirt_loop_item.content }}"
     dest: "{{ _libvirt_loop_item.dest }}"
     owner: root
@@ -119,7 +119,7 @@
   notify: restart libvirt
 
 - name: Ensure libvirt SASL user exists
-  shell:
+  ansible.builtin.shell:
     cmd: >
       set -o pipefail &&
       echo {{ item.password }} |
@@ -132,10 +132,10 @@
   when: libvirt_host_enable_sasl_support | bool
 
 - name: Flush handlers
-  meta: flush_handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Ensure the libvirt daemon is started and enabled
-  service:
+  ansible.builtin.service:
     name: "{{ item.service }}"
     state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
     enabled: "{{ item.enabled | bool }}"

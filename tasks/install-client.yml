@@ -1,6 +1,6 @@
 ---
 - name: Ensure libvirt client packages are installed
-  package:
+  ansible.builtin.package:
     name: "{{ libvirt_host_libvirt_packages_client | select | list }}"
     state: present
   register: result

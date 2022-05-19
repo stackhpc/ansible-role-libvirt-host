@@ -33,6 +33,7 @@ install:
   - vagrant plugin install vagrant-libvirt
   - pip install wheel pyopenssl
   - pip install netaddr python-vagrant yamllint testinfra flake8
+  - pip install ansible-compat==0.5.0 # see https://github.com/ansible-community/molecule/issues/3404
   - pip install ansible ansible-lint
   - pip install molecule molecule-vagrant python-vagrant
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
