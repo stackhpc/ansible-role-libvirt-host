@@ -7,11 +7,11 @@ galaxy_info:
     Role to install and configure a host as a Libvirt/KVM hypervisor
   company: Osgiliath Inc on top of StackHPC Ltd achievements (Thanks! I'll PR it)
   license: Apache2
-  min_ansible_version: 2.0
+  min_ansible_version: "2.0"
   platforms:
     - name: EL
       versions:
-        - 7
+        - all
     - name: Ubuntu
       versions:
         - all
