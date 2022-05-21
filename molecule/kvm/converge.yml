@@ -23,7 +23,7 @@
         mode: bridge
         bridge: bridge0
   roles:
-    - role: tcharl.ansible_role_libvirt_host
+    - role: ansible-role-libvirt-host
   tasks:
     - name: "Post converge - Install vagrant"
       ansible.builtin.package:
