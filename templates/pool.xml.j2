@@ -4,28 +4,28 @@
 <pool type='{{ item.type }}'>
 {% endif %}
   <name>{{ item.name }}</name>
-  {% if 'capacity' in item %}
+{% if 'capacity' in item %}
   <capacity>{{ item.capacity }}</capacity>
-  {% endif %}
-  {% if item.type in ['logical', 'lvm2', 'zfs', 'rbd'] %}
+{% endif %}
+{% if item.type in ['logical', 'lvm2', 'zfs', 'rbd'] %}
   <source>
     <name>{{ item.source }}</name>
-    {% if item.type in ['logical', 'lvm2'] %}
+  {% if item.type in ['logical', 'lvm2'] %}
     <format type='lvm2'/>
-    {% endif %}
-    {% if item.type == 'rbd' %}
+  {% endif %}
+  {% if item.type == 'rbd' %}
     {% for host in item.hosts %}
     <host name='{{ host }}' />
     {% endfor %}
     <auth type='ceph' username='{{ item.username }}'>
       <secret usage='{{ item.name }}'/>
     </auth>
-    {% endif %}
-  </source>
   {% endif %}
-  {% if item.type != 'zfs' %}
+  </source>
+{% endif %}
+{% if item.type != 'zfs' %}
   <target>
     <path>{{ item.path | default('placeholder_value') }}</path>
   </target>
-  {% endif %}
+{% endif %}
 </pool>

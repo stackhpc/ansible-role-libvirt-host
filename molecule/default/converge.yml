@@ -1,0 +1,72 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    manage_lvm: true
+    lvm_groups:
+      - vgname: libvirt_vg
+        disks:
+          - /dev/sdb1
+        create: true
+    users_group_list2:
+      - name: libvirt
+    systemusers_user_list:
+      - name: libvirt
+        group: libvirt
+        groups: wheel
+    libvirt_host_pools:
+      - name: libvirtpool
+        type: lvm2
+        source: libvirt_vg
+    libvirt_host_networks:
+      - name: ansible-virtualization-bridge
+        mode: bridge
+        bridge: virbr0
+        ip: 192.168.1.1
+        netmask: 255.255.255.0
+        dhcp_start: 192.168.1.100
+        dhcp_end: 192.168.1.200
+  roles:
+    - role: tcharl.ansible_role_libvirt_host
+  tasks:
+    - name: "Post converge - Install vagrant"
+      ansible.builtin.package:
+        name:
+         - qemu
+         - libvirt
+         - ruby-devel
+         - gcc
+         - qemu-kvm
+         - libxml2-devel
+         - libxslt-devel
+         - libguestfs-tools-c
+         - vagrant
+         - daemonize
+        state: present
+      become: true
+
+    - name: Start libvirtd
+      ansible.builtin.service:
+        name: libvirtd
+        state: started
+      become: true
+
+    - name: Copy vagrant file
+      ansible.builtin.copy:
+        src: Vagrantfile
+        dest: /home/vagrant/Vagrantfile
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+
+    - name: Execute Vagrant as daemon
+      ansible.builtin.command:
+        cmd: "daemonize -e /home/vagrant/myvmerr.log -o /home/vagrant/myvm.log -c /home/vagrant -E VAGRANT_LOG=info /usr/bin/vagrant up --provider=libvirt"
+        chdir: /home/vagrant
+        creates: /home/vagrant/myvm.log
+
+    - name: Wait until the string "auth" is in the vagrant log
+      ansible.builtin.wait_for:
+        path: /home/vagrant/myvmerr.log
+        search_regex: SSH\sis\sready
+        timeout: 1800

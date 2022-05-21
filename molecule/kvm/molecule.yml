@@ -1,0 +1,42 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+    roles-path: ${MOLECULE_PROJECT_DIRECTORY}/../community
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+lint: |
+  set -e
+  yamllint .
+  flake8
+  ANSIBLE_ROLES_PATH=${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH} ANSIBLE_COLLECTIONS_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community-collections:${ANSIBLE_COLLECTIONS_PATH} ansible-lint
+platforms:
+  - name: Fedora-Molecule-libvirt-host
+    box: fedora/35-cloud-base
+    provider_options:
+      driver: '"kvm"'
+      cpus: 2
+      memory: 2048
+    provider_raw_config_args:
+      - "storage :file, :size => '1G', :device => 'vdb'"
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      forks: 20
+    ssh_connection:
+      pipelining: true
+      ssh_args: -o ControlMaster=auto -o ControlPersist=600s
+  env:
+    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH}"
+verifier:
+  name: testinfra
+  env:
+    PYTHONWARNINGS: "ignore:.*U.*mode is deprecated:DeprecationWarning"
+  options:
+    v: 1
+scenario:
+  name: kvm

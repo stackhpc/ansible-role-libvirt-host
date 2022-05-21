@@ -1,0 +1,8 @@
+exclude_paths:
+ - .cache/
+ - meta/
+ - molecule/
+warn_list:
+ - schema
+skip_list:
+ - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern

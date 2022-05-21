@@ -8,13 +8,13 @@
 # skip being set to true. This is undeseriable so we have to
 # put it behind an include (a block doesn't work).
 - name: Check if /etc/default/libvirt-bin exists
-  stat:
+  ansible.builtin.stat:
     path: /etc/default/libvirt-bin
   register: libvirt_bin_stat
   tags: vars
 
 - name: Determine path to libvirt environment file
-  set_fact:
+  ansible.builtin.set_fact:
     libvirt_host_lineinfile_extra_rules:
       - args:
           path: "{{ libvirt_env_path }}"
@@ -27,7 +27,7 @@
   tags: vars
 
 - name: Configure libvirt QEMU apparmor profile template
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "/etc/apparmor.d/libvirt/TEMPLATE.qemu"
     insertbefore: "^}"
     line: "  {{ item.path }}/** rwk,"

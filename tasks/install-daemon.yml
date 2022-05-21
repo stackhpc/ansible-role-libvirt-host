@@ -8,12 +8,12 @@
   #
   # The core team had a a change of heart and it is actually being preserved:
   # https://github.com/ansible/ansible/pull/43798
-  yum_repository: "{{ item }}"
+  ansible.builtin.yum_repository: "{{ item }}"
   loop: "{{ libvirt_host_custom_yum_repos | default([]) }}"
   become: true
 
 - name: Ensure libvirt packages are installed
-  package:
+  ansible.builtin.package:
     name: "{{ libvirt_host_libvirt_packages | select | list }}"
     state: present
   register: result
@@ -23,7 +23,7 @@
 
 # NOTE: QEMU emulators are available in EPEL on CentOS 7.
 - name: Ensure the EPEL repository is enabled
-  yum:
+  ansible.builtin.yum:
     name: epel-release
     state: present
   register: result
@@ -32,11 +32,10 @@
   become: True
   when:
     - ansible_facts.os_family == "RedHat"
-    - ansible_facts.distribution_major_version | int == 7
     - libvirt_host_qemu_emulators | length > 0
 
 - name: Ensure QEMU emulator packages are installed
-  package:
+  ansible.builtin.package:
     name: "{{ package }}"
     state: present
   loop: "{{ libvirt_host_qemu_emulators | flatten(levels=1) }}"
