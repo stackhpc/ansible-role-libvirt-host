@@ -24,6 +24,7 @@ libvirt_host_packages_efi_by_version:
   8:
     - edk2-ovmf
   35: [] # fedora
+  36: [] # fedora
 
 libvirt_host_packages_efi: >-
   {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
@@ -55,6 +56,7 @@ libvirt_host_custom_yum_repos_efi_by_version:
       gpgcheck: yes
   8: []
   35: [] # Fedora :-)
+  36: [] # Fedora :-)
 
 libvirt_host_custom_yum_repos: >-
   {{ libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int] }}
