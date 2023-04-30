@@ -1,8 +1,10 @@
 ---
 
-dist: bionic
+dist: focal
 
 language: python
+python:
+  - "3.8"
 addons:
   apt:
     sources:
@@ -24,8 +26,6 @@ addons:
       - iproute2
       - sudo
       - vagrant
-python:
-  - "3.8"
 
 install:
 #  - wget https://releases.hashicorp.com/vagrant/$VAGRANT_VER/vagrant_"$VAGRANT_VER"_x86_64.deb

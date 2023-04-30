@@ -31,18 +31,62 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: install prereq
-        run: |
-          sudo apt-get update
-          sudo apt -y install python3-setuptools vagrant
-      - name: Install molecule
+      - name: update apt
         run: |
           sudo apt update
-          sudo apt -y install python3-setuptools python3 python3-pip
-          pip3 install wheel tox
-      - name: molecule lint
+      - name: install tox apt prerequisite
+        run: |
+          sudo apt -y install sudo python3 python3-pip
+      - name: pip install packages
+        run: |
+          pip3 install wheel setuptools tox
+#      - name: Test KVM conditions fails
+#        run: |
+#          sudo kvm-ok
+      - name: tox lint
         run: |
           tox -e lint
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: add vagrant apt key
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+      - name: add vagrant apt repository
+        run: |
+          sudo apt-add-repository -y "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      - name: update apt
+        run: |
+          sudo apt update
+#      - name: apt upgrade
+#        run: |
+#          sudo apt upgrade
+      - name: install libvirt apt prerequisite
+        run: |
+          sudo apt -y install bridge-utils dnsmasq-base ebtables libvirt-dev qemu-kvm libvirt-daemon-system libvirt-daemon libvirt-clients qemu-utils ruby-dev ca-certificates curl gcc iproute2 sudo vagrant python3 python3-pip cpu-checker
+      - name: start libvirtd
+        run: |
+          sudo systemctl restart libvirtd
+      - name: chmod libvirt socket
+        run: |
+          sudo chmod o+rwx /var/run/libvirt/libvirt-sock
+      - name: vagrant install packages
+        run: |
+          vagrant plugin install vagrant-libvirt
+          ./configure
+      - name: pip install packages
+        run: |
+          pip3 install wheel setuptools tox
+#      - name: Test KVM conditions fails
+#        run: |
+#          sudo kvm-ok
+#      - name: tox test
+#        run: |
+#          tox -e test-exec
