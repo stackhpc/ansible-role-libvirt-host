@@ -1,6 +1,6 @@
 ---
-- ansible.builtin.include_tasks: prelude.yml
-- ansible.builtin.include_tasks: validate.yml
+- ansible.builtin.import_tasks: prelude.yml
+- ansible.builtin.import_tasks: validate.yml
 - name: Include install-daemon.yml
   ansible.builtin.include_tasks: install-daemon.yml
   when: libvirt_host_install_daemon | bool

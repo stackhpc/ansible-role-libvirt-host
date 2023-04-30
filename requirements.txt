@@ -1,0 +1,7 @@
+ansible-lint
+flake8
+yamllint
+pytest-testinfra
+molecule-plugins[vagrant]
+python-vagrant
+jmespath

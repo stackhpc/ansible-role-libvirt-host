@@ -32,13 +32,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt -y install python3-setuptools python3 python3-pip
-          pip3 install wheel
-          pip3 install ansible-compat==0.5.0
-          pip3 install ansible molecule testinfra yamllint ansible-lint flake8 molecule-vagrant
-
+          pip3 install wheel tox
       - name: molecule lint
         run: |
-          molecule lint
+          tox -e lint
 
   requirements:
     # The type of runner that the job will run on
@@ -49,4 +46,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: install prereq
         run: |
-          ansible-galaxy role install -r requirements.yml
+          tox -e dependency

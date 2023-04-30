@@ -1,9 +1,12 @@
 ---
 dependency:
   name: galaxy
+  enabled: ${DEPENDENCY_ENABLED:-True}
   options:
-    role-file: requirements.yml
+    role-file: ${REQUIREMENTS_PATH:-requirements-standalone.yml}
     roles-path: ${MOLECULE_PROJECT_DIRECTORY}/../community
+    requirements-file: requirements-collections.yml
+    collections-path: ${MOLECULE_PROJECT_DIRECTORY}/../community-collections
 driver:
   name: vagrant
   provider:
@@ -15,7 +18,7 @@ lint: |
   ANSIBLE_ROLES_PATH=${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH} ANSIBLE_COLLECTIONS_PATH=${MOLECULE_PROJECT_DIRECTORY}/../community-collections:${ANSIBLE_COLLECTIONS_PATH} ansible-lint
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: fedora/36-cloud-base
+    box: fedora/35-cloud-base
     provider_options:
       cpus: 4
       memory: 8092

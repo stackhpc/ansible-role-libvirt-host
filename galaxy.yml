@@ -1,0 +1,21 @@
+---
+namespace: "tcharl"
+name: "ansible_role_libvirt_host"
+version: "0.0.1"
+description: "Small variation of stackhpc libvirt_host (i.e. using mjrsmith lvm role instead of bare ansible lvm command, which is a bit more complete)"
+
+authors:
+  - "Charlie Mordant <cmordant1@gmail.com>"
+
+repository: "https://github.com/OsgiliathEnterprise/ansible-role-libvirt-host"
+documentation: "https://github.com/OsgiliathEnterprise/ansible-role-libvirt-host/blob/master/README.md"
+homepage: "https://github.com/OsgiliathEnterprise/ansible-role-libvirt-host"
+issues: "https://github.com/OsgiliathEnterprise/ansible-role-libvirt-host/issues"
+
+readme: "README.md"
+license:
+  - "Apache-2.0"
+tags:
+  - "linux"
+  - "qemu"
+  - "kvm"
