@@ -1,0 +1,36 @@
+{
+  "ToxEnv": {
+    "name": "converge",
+    "type": "VirtualEnvRunner"
+  },
+  "Python": {
+    "version_info": [
+      3,
+      11,
+      3,
+      "final",
+      0
+    ],
+    "executable": "/usr/local/Cellar/python@3.11/3.11.3/Frameworks/Python.framework/Versions/3.11/bin/python3.11",
+    "virtualenv version": "20.23.0"
+  },
+  "PythonRun": {
+    "deps": {
+      "options": [],
+      "requirements": [
+        "ansible-lint",
+        "flake8",
+        "jmespath",
+        "molecule-plugins[vagrant]",
+        "pytest-testinfra",
+        "python-vagrant",
+        "yamllint"
+      ],
+      "constraints": [],
+      "constraint_options": {
+        "constrain_package_deps": false,
+        "use_frozen_constraints": false
+      }
+    }
+  }
+}
