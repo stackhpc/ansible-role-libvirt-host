@@ -34,7 +34,9 @@ install:
   - pip install wheel pyopenssl tox
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
 
-script: travis_wait 30 tox -e test-exec -- --scenario-name kvm
+script:
+  - mv ../ansible-role-libvirt-host ../tcharl.ansible_role_libvirt_host
+  - travis_wait 30 tox -e test-exec -- --scenario-name kvm
 branches:
   only:
     - master
