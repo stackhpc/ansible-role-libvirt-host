@@ -23,7 +23,7 @@ jobs:
       - name: install prereq
         run: |
           ansible-galaxy role install -r requirements-standalone.yml
-          ansible-galaxy role install -r requirements-collections.yml
+          ansible-galaxy collection install -r requirements-collections.yml
   # This workflow contains a single job called "build"
   lint:
     # The type of runner that the job will run on
