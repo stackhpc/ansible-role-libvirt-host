@@ -11,14 +11,9 @@ driver:
   name: vagrant
   provider:
     name: virtualbox
-lint: |
-  set -e
-  yamllint .
-  flake8
-  ansible-lint
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: fedora/35-cloud-base
+    box: fedora/38-cloud-base
     provider_options:
       cpus: 4
       memory: 8092
@@ -33,8 +28,6 @@ platforms:
       - "persistent_storage.diskdevice = '/dev/sdb'"
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_ROLES_PATH: "${MOLECULE_PROJECT_DIRECTORY}/..:${MOLECULE_PROJECT_DIRECTORY}/../community:${ANSIBLE_ROLES_PATH}"
 verifier:
   name: testinfra
   env:
