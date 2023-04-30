@@ -55,6 +55,13 @@
         group: vagrant
         mode: '0644'
 
+    - name: stats files
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop:
+        - "/home/vagrant/myvmerr.log"
+        - "/home/vagrant/myvm.log"
+
     - name: Execute Vagrant as daemon
       ansible.builtin.command:
         cmd: "daemonize -e /home/vagrant/myvmerr.log -o /home/vagrant/myvm.log -c /home/vagrant -E VAGRANT_LOG=info /usr/bin/vagrant up --provider=libvirt"
