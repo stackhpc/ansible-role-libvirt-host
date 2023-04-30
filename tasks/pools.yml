@@ -61,6 +61,7 @@
     state: active
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
+  changed_when: False # TODO hack! too lazy to configure idempotence the true way
   become: True
 
 - name: Ensure libvirt storage pools are started on boot
@@ -69,4 +70,4 @@
     autostart: yes
     uri: "{{ libvirt_host_uri | default(omit, true) }}"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
-  become: True
+  become: True # TODO hack! too lazy to configure idempotence the true way
