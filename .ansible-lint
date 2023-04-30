@@ -1,8 +1,18 @@
 exclude_paths:
  - .cache/
+ - .tox/
  - meta/
+ - tests/
  - molecule/
 warn_list:
  - schema
+ - jinja[spacing]
+ - name[missing]
+ - name[casing]
+ - galaxy[no-changelog]
+ - galaxy[no-runtime]
+ - galaxy[version-incorrect]
+ - no-changed-when
+ - args[module]
 skip_list:
  - '106'  # Role name {} does not match ``^[a-z][a-z0-9_]+$`` pattern

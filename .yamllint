@@ -1,7 +1,9 @@
 ---
 # Based on ansible-lint config
 extends: default
-
+ignore: |
+  .cache
+  .tox
 rules:
   braces:
     max-spaces-inside: 1
