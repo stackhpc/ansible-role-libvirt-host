@@ -2,3 +2,6 @@
 [Socket]
 ListenStream=
 ListenStream={{ _libvirt_listen_stream }}
+# FreeBind is recommended when listening on a specific address:
+# https://www.freedesktop.org/software/systemd/man/systemd.socket.html#FreeBind=
+FreeBind=true

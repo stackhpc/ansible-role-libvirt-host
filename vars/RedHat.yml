@@ -23,6 +23,8 @@ libvirt_host_packages_efi_by_version:
     - qemu-kvm-ev # Need smm support for secure boot
   8:
     - edk2-ovmf
+  9:
+    - edk2-ovmf
   35: [] # fedora
   36: [] # fedora
   37: [] # fedora
@@ -57,6 +59,7 @@ libvirt_host_custom_yum_repos_efi_by_version:
       baseurl: http://mirror.centos.org/$contentdir/$releasever/virt/$basearch/kvm-common/
       gpgcheck: yes
   8: []
+  9: []
   35: [] # Fedora :-)
   36: [] # Fedora :-)
   37: [] # Fedora :-)
