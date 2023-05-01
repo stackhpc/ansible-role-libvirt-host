@@ -33,6 +33,7 @@ install:
   - vagrant plugin install vagrant-libvirt
   - pip install wheel pyopenssl tox
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
+  - ./configure
 
 script:
   - mv ../ansible-role-libvirt-host ../tcharl.ansible_role_libvirt_host
