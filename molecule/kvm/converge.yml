@@ -74,7 +74,7 @@
           ansible.builtin.wait_for:
             path: /home/vagrant/myvmerr.log
             search_regex: SSH\sis\sready
-            timeout: 1800
+            timeout: 10000
       always:
         - name: cat error log
           ansible.builtin.slurp:
