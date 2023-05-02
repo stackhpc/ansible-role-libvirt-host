@@ -68,8 +68,25 @@
         chdir: /home/vagrant
         creates: /home/vagrant/myvm.log
 
-    - name: Wait until the string "auth" is in the vagrant log
-      ansible.builtin.wait_for:
-        path: /home/vagrant/myvmerr.log
-        search_regex: SSH\sis\sready
-        timeout: 1800
+    - name: Wait until the string "Time for SSH ready" is in the vagrant log
+      block:
+        - name: Wait until the string "auth" is in the vagrant log
+          ansible.builtin.wait_for:
+            path: /home/vagrant/myvmerr.log
+            search_regex: SSH\sis\sready
+            timeout: 1800
+      always:
+        - name: cat error log
+          ansible.builtin.slurp:
+            src: /home/vagrant/myvmerr.log
+          register: error_log
+        - name: print
+          ansible.builtin.debug:
+            msg: "{{ error_log['content'] | b64decode }}"
+        - name: cat info log
+          ansible.builtin.slurp:
+            src: /home/vagrant/myvm.log
+          register: info_log
+        - name: print
+          ansible.builtin.debug:
+            msg: "{{ info_log['content'] | b64decode }}"
