@@ -15,7 +15,7 @@ platforms:
   - name: Fedora-Molecule-libvirt-host
     box: fedora/38-cloud-base
     provider_options:
-      driver: '"kvm"'
+      driver: "kvm"
       cpus: 2
       memory: 2048
     provider_raw_config_args:
