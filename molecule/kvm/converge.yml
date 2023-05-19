@@ -57,7 +57,7 @@
 
     - name: Execute Vagrant as daemon
       ansible.builtin.command:
-        cmd: "daemonize -e /home/vagrant/myvm.log -o /home/vagrant/myvm.log -c /home/vagrant -E VAGRANT_LOG=info /usr/bin/vagrant up --provider=libvirt"
+        cmd: "daemonize -e /home/vagrant/myvmerr.log -o /home/vagrant/myvm.log -c /home/vagrant -E VAGRANT_LOG=info /usr/bin/vagrant up --provider=libvirt"
         chdir: /home/vagrant
         creates: /home/vagrant/myvm.log
 
@@ -65,15 +65,22 @@
       block:
         - name: Wait until the string "auth" is in the vagrant log
           ansible.builtin.wait_for:
-            path: /home/vagrant/myvm.log
+            path: /home/vagrant/myvmerr.log
             search_regex: SSH\sis\sready
             timeout: 1800
             delay: 10
       always:
-        - name: cat log
+        - name: cat error log
           ansible.builtin.slurp:
-            src: /home/vagrant/myvm.log
+            src: /home/vagrant/myvmerr.log
           register: error_log
         - name: print
           ansible.builtin.debug:
             msg: "{{ error_log['content'] | b64decode }}"
+        - name: cat info log
+          ansible.builtin.slurp:
+            src: /home/vagrant/myvm.log
+          register: info_log
+        - name: print
+          ansible.builtin.debug:
+            msg: "{{ info_log['content'] | b64decode }}"
