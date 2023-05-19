@@ -2,3 +2,5 @@
 roles:
   # Install a role from Ansible Galaxy.
   - name: mrlesmithjr.manage-lvm
+  - name: robertdebock.epel
+  - name: robertdebock.bootstrap
