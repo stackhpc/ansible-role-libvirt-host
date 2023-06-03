@@ -13,7 +13,7 @@ driver:
     name: virtualbox
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: fedora/38-cloud-base
+    box: ${TESTBOX:-fedora/38-cloud-base}
     provider_options:
       cpus: 4
       memory: 8092
