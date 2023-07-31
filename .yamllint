@@ -1,0 +1,10 @@
+---
+extends: default
+
+rules:
+  # 150 chars should be enough, but don't fail if a line is longer
+  line-length:
+    max: 180
+    level: warning
+  truthy:
+    allowed-values: ['true', 'false', 'True', 'False', 'yes', 'no']
