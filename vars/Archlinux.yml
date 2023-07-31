@@ -3,7 +3,7 @@
 libvirt_host_libvirt_packages_default:
   - libvirt
   - qemu-headless
-  - ebtables 
+  - ebtables
   - dnsmasq
 
 # List of default client packages to install.
