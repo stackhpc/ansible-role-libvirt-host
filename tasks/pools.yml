@@ -5,20 +5,21 @@
   when:
     - manage_lvm is defined
     - manage_lvm
-    - libvirt_host_pools |  map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
+    - libvirt_host_pools | map(attribute='type') | select('match', '^lvm2$') | join(',') | length > 0
 
 - name: Ensure libvirt dir storage pool directories exist
   ansible.builtin.file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-    mode: "{{ item.mode|int(base=8) }}"
+    mode: "{{ item.mode | int(base=8) }}"
     state: directory
   when: item.type == "dir"
   loop: "{{ libvirt_host_pools | flatten(levels=1) }}"
   become: True
 
-- ansible.builtin.include_tasks:
+- name: Include tasks for rbd storage pools
+  ansible.builtin.include_tasks:
     file: rbd.yml
     apply:
       become: True

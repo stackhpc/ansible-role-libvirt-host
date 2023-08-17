@@ -1,12 +1,14 @@
 ---
 
-- name: reload systemd
+- name: Handler | reload systemd
   ansible.builtin.systemd:
     daemon_reload: true
+  listen:
+    - reload systemd
   become: true
 
 # The socket units cannot be stopped or started if libvirt is running.
-- name: stop libvirt
+- name: Handler | stop libvirt
   ansible.builtin.service:
     name: libvirtd
     state: stopped
@@ -14,7 +16,7 @@
   listen:
     - restart libvirt
 
-- name: start libvirtd sockets
+- name: Handler | start libvirtd sockets
   ansible.builtin.service:
     name: "{{ item.service }}"
     state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
@@ -25,7 +27,7 @@
   listen:
     - restart libvirt
 
-- name: start libvirt
+- name: Handler | start libvirt
   ansible.builtin.service:
     name: libvirtd
     state: started
@@ -33,6 +35,8 @@
   listen:
     - restart libvirt
 
-- name: reload libvirt qemu apparmor profile template
+- name: Handler | reload libvirt qemu apparmor profile template
   ansible.builtin.command: apparmor_parser -r /etc/apparmor.d/libvirt/TEMPLATE.qemu
+  listen:
+    - reload libvirt qemu apparmor profile template
   become: true

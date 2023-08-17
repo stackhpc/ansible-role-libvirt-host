@@ -6,7 +6,7 @@ libvirt_host_libvirt_packages_common:
 # List of all daemon packages to install.
 libvirt_host_libvirt_packages_libvirt_daemon:
   # The apparmor package contains the apparmor_parser tool.
-  - "{% if ansible_facts.apparmor.status| default == 'enabled' %}apparmor{% endif %}"
+  - "{% if ansible_facts.apparmor.status | default == 'enabled' %}apparmor{% endif %}"
   - >-
     {%- if (ansible_facts.distribution == "Ubuntu" and
             ansible_facts.distribution_major_version is version_compare('16.04', '<')) or
