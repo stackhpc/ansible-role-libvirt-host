@@ -4,7 +4,6 @@ dependency:
   enabled: ${DEPENDENCY_ENABLED:-True}
   options:
     role-file: ${REQUIREMENTS_PATH:-requirements-standalone.yml}
-    roles-path: ${MOLECULE_PROJECT_DIRECTORY}/../community
     requirements-file: requirements-collections.yml
 driver:
   name: vagrant
