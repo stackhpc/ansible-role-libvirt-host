@@ -187,6 +187,33 @@ systemd.socket for format. Default is unset.
 
 `libvirt_host_tls_cacert`: TLS CA certificate. Default is unset.
 
+`libvirt_host_qemu_tls_enabled`: Encrypt communication between QEMU instances.
+Default is `false`.
+
+`libvirt_host_qemu_tls_server_cert`: TLS server certificate. Default is `libvirt_host_tls_server_cert`.
+
+`libvirt_host_qemu_tls_server_key`: TLS server key. Default is `libvirt_host_tls_server_key`.
+
+`libvirt_host_qemu_tls_client_cert`: TLS client certificate. Default is `libvirt_host_tls_client_cert`.
+
+`libvirt_host_qemu_tls_client_key`: TLS client key. Default is `libvirt_host_tls_client_key`.
+
+`libvirt_host_qemu_tls_cacert`:  TLS CA certificate. Default is `libvirt_host_tls_cacert`.
+
+`libvirt_host_qemu_user`: The user that QEMU runs as. This will be used for TLS file ownership
+Default is `libvirt-qemu`.
+
+`libvirt_host_qemu_group`: The group that the QEMU user belongs to. This will be used for TLS file ownership.
+Default is `libvirt-qemu`.
+
+`libvirt_host_vnc_tls_enabled`: Encrypt VNC traffic. Default is `false`.
+
+`libvirt_host_vnc_tls_server_cert`: TLS server certificate. Default is `libvirt_host_tls_server_cert`.
+
+`libvirt_host_vnc_tls_server_key`: TLS server key. Default is `libvirt_host_tls_server_key`.
+
+`libvirt_host_vnc_tls_cacert`: TLS CA certificate. Default is `libvirt_host_tls_cacert`.
+
 `libvirt_host_configure_apparmor`: Whether to configure AppArmor for directory
 storage pools.
 

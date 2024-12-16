@@ -46,3 +46,39 @@ _libvirt_tls_certs:
     content: "{{ libvirt_host_tls_cacert }}"
     dest: /etc/pki/CA/cacert.pem
     mode: "0644"
+
+_libvirt_host_qemu_tls_certs:
+  servercert:
+    content: "{{ libvirt_host_qemu_tls_server_cert | default(libvirt_host_tls_server_cert) }}"
+    dest: /etc/pki/qemu/server-cert.pem
+    mode: "0600"
+  serverkey:
+    content: "{{ libvirt_host_qemu_tls_server_key | default(libvirt_host_tls_server_key) }}"
+    dest: /etc/pki/qemu/server-key.pem
+    mode: "0600"
+  clientcert:
+    content: "{{ libvirt_host_qemu_tls_client_cert | default(libvirt_host_tls_client_cert) }}"
+    dest: /etc/pki/qemu/client-cert.pem
+    mode: "0600"
+  clientkey:
+    content: "{{ libvirt_host_qemu_tls_client_key | default(libvirt_host_tls_client_key) }}"
+    dest: /etc/pki/qemu/client-key.pem
+    mode: "0600"
+  cacert:
+    content: "{{ libvirt_host_qemu_tls_cacert | default(libvirt_host_tls_cacert) }}"
+    dest: /etc/pki/qemu/ca-cert.pem
+    mode: "0644"
+
+_libvirt_host_vnc_tls_certs:
+  servercert:
+    content: "{{ libvirt_host_vnc_tls_server_cert | default(libvirt_host_tls_server_cert) }}"
+    dest: /etc/pki/libvirt-vnc/server-cert.pem
+    mode: "0600"
+  serverkey:
+    content: "{{ libvirt_host_vnc_tls_server_key | default(libvirt_host_tls_server_key) }}"
+    dest: /etc/pki/libvirt-vnc/server-key.pem
+    mode: "0600"
+  cacert:
+    content: "{{ libvirt_host_vnc_tls_cacert | default(libvirt_host_tls_cacert) }}"
+    dest: /etc/pki/libvirt-vnc/ca-cert.pem
+    mode: "0644"

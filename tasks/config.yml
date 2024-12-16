@@ -83,7 +83,7 @@
     - reload systemd
     - restart libvirt
 
-- name: Create directory for TLS certificates and keys
+- name: Create directory for Libvirt TLS certificates and keys
   file:
     path: "{{ item }}"
     state: directory
@@ -100,7 +100,7 @@
   when:
     - libvirt_host_tls_listen | bool
 
-- name: Copy TLS certificates and keys
+- name: Copy Libvirt TLS certificates and keys
   copy:
     content: "{{ _libvirt_loop_item.content }}"
     dest: "{{ _libvirt_loop_item.dest }}"
@@ -130,6 +130,76 @@
   changed_when: true
   loop: "{{ libvirt_host_sasl_credentials }}"
   when: libvirt_host_enable_sasl_support | bool
+
+- name: Create directory for QEMU TLS certificates and keys
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ libvirt_host_qemu_user }}"
+    group: "{{ libvirt_host_qemu_group }}"
+    mode: 0700
+  become: true
+  loop: >-
+    {{ _libvirt_host_qemu_tls_certs.values() |
+       selectattr('content') |
+       map(attribute='dest') |
+       map('dirname') |
+       unique }}
+  when:
+    - libvirt_host_qemu_tls_enabled | bool
+
+- name: Copy QEMU TLS certificates and keys
+  copy:
+    content: "{{ _libvirt_host_qemu_loop_item.content }}"
+    dest: "{{ _libvirt_host_qemu_loop_item.dest }}"
+    owner: "{{ libvirt_host_qemu_user }}"
+    group: "{{ libvirt_host_qemu_group }}"
+    mode: "{{ _libvirt_host_qemu_loop_item.mode }}"
+  become: true
+  # NOTE: Loop over keys of _libvirt_host_qemu_tls_certs to avoid leaking the key
+  # contents.
+  loop: "{{ _libvirt_host_qemu_tls_certs.keys() }}"
+  when:
+    - libvirt_host_qemu_tls_enabled | bool
+    - _libvirt_host_qemu_loop_item.content
+  vars:
+    _libvirt_host_qemu_loop_item: "{{ _libvirt_host_qemu_tls_certs[item] }}"
+  notify: restart libvirt
+
+- name: Create directory for Libvirt VNC TLS certificates and keys
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ libvirt_host_qemu_user }}"
+    group: "{{ libvirt_host_qemu_group }}"
+    mode: 0700
+  become: true
+  loop: >-
+    {{ _libvirt_host_vnc_tls_certs.values() |
+       selectattr('content') |
+       map(attribute='dest') |
+       map('dirname') |
+       unique }}
+  when:
+    - libvirt_host_vnc_tls_enabled | bool
+
+- name: Copy Libvirt VNC TLS certificates and keys
+  copy:
+    content: "{{ _libvirt_host_vnc_loop_item.content }}"
+    dest: "{{ _libvirt_host_vnc_loop_item.dest }}"
+    owner: "{{ libvirt_host_qemu_user }}"
+    group: "{{ libvirt_host_qemu_group }}"
+    mode: "{{ _libvirt_host_vnc_loop_item.mode }}"
+  become: true
+  # NOTE: Loop over keys of _libvirt_host_vnc_tls_certs to avoid leaking the key
+  # contents.
+  loop: "{{ _libvirt_host_vnc_tls_certs.keys() }}"
+  when:
+    - libvirt_host_vnc_tls_enabled | bool
+    - _libvirt_host_vnc_loop_item.content
+  vars:
+    _libvirt_host_vnc_loop_item: "{{ _libvirt_host_vnc_tls_certs[item] }}"
+  notify: restart libvirt
 
 - name: Flush handlers
   meta: flush_handlers
