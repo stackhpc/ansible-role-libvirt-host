@@ -187,7 +187,7 @@ systemd.socket for format. Default is unset.
 
 `libvirt_host_tls_cacert`: TLS CA certificate. Default is unset.
 
-`libvirt_host_qemu_tls_enabled`: Encrypt communication between QEMU instances.
+`libvirt_host_qemu_tls_enabled`: Encrypt communication between QEMU instances using TLS.
 Default is `false`.
 
 `libvirt_host_qemu_tls_server_cert`: TLS server certificate. Default is `libvirt_host_tls_server_cert`.
