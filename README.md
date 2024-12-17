@@ -206,7 +206,7 @@ Default is `libvirt-qemu`.
 `libvirt_host_qemu_group`: The group that the QEMU user belongs to. This will be used for TLS file ownership.
 Default is `libvirt-qemu`.
 
-`libvirt_host_vnc_tls_enabled`: Encrypt VNC traffic. Default is `false`.
+`libvirt_host_vnc_tls_enabled`: Encrypt VNC traffic using TLS. Default is `false`.
 
 `libvirt_host_vnc_tls_server_cert`: TLS server certificate. Default is `libvirt_host_tls_server_cert`.
 
