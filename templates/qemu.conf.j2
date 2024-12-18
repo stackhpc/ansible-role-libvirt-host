@@ -1,4 +1,8 @@
 # {{ ansible_managed }}
+{% if libvirt_host_vnc_tls_enabled | bool %}
+vnc_tls=1
+vnc_tls_x509_verify=1
+{% endif -%}
 {% for key, value in libvirt_host_qemu_conf.items() %}
 {# While the value is not JSON formatted, it is close enough - strings need to be double quoted. #}
 {{ key }} = {{ value | to_json }}
