@@ -209,15 +209,13 @@
     name: "{{ item.service }}"
     state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
     enabled: "{{ item.enabled | bool }}"
-  become: True
-  loop: "{{ _libvirt_services }}"
+  become: true
+  loop: "{{ _libvirt_services + _libvirt_socket_services }}"
+  when: item.listen_address is not defined or
+        (item.listen_address is not none and item.listen_address | length > 0)
   loop_control:
     label: "{{ item.service }}"
   vars:
     _libvirt_services:
-      - service: libvirtd-tcp.socket
-        enabled: "{{ libvirt_host_tcp_listen | bool }}"
-      - service: libvirtd-tls.socket
-        enabled: "{{ libvirt_host_tls_listen | bool }}"
       - service: libvirtd
         enabled: true
