@@ -5,3 +5,9 @@ ListenStream={{ _libvirt_listen_stream }}
 # FreeBind is recommended when listening on a specific address:
 # https://www.freedesktop.org/software/systemd/man/systemd.socket.html#FreeBind=
 FreeBind=true
+
+[Unit]
+# Wait for network to be configured so we can bind to a specific address
+# without it changing underneath us if it gets reconfigured
+Wants=network-online.target
+After=network-online.target
