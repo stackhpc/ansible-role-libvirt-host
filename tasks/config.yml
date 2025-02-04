@@ -83,6 +83,33 @@
     - reload systemd
     - restart libvirt
 
+- name: Create systemd drop-in directory for libvirt socket dependencies
+  file:
+    path: "/etc/systemd/system/libvirtd.service.d"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+  when: enabled_socket_services | length > 0
+  vars:
+    enabled_socket_services: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+
+- name: Configure systemd socket dependencies for libvirt
+  template:
+    src: socket-wants-overrides.j2
+    dest: "/etc/systemd/system/libvirtd.service.d/socket-wants-override.conf"
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+  when: enabled_socket_services | length > 0
+  vars:
+    enabled_socket_services: "{{ _libvirt_socket_services | selectattr('enabled') }}"
+  notify:
+    - reload systemd
+    - restart libvirt
+
 - name: Create directory for Libvirt TLS certificates and keys
   file:
     path: "{{ item }}"

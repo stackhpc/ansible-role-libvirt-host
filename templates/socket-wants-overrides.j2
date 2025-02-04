@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+[Unit]
+{% for service in enabled_socket_services %}
+Wants={{ service.service }}
+After={{ service.service }}
+{% endfor %}
