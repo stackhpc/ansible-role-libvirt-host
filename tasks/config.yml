@@ -221,3 +221,7 @@
         enabled: "{{ libvirt_host_tls_listen | bool }}"
       - service: libvirtd
         enabled: true
+
+- name: Disable libvirt modular systemd units
+  include_tasks: disable-modular-systemd-units.yml
+  when: libvirt_disable_modular_systemd_units
