@@ -1,0 +1,13 @@
+---
+
+- name: Disable and mask libvirtd modular systemd services and sockets
+  systemd:
+    name: "{{ service_name }}"
+    state: stopped
+    enabled: false
+    masked: true
+  loop: "{{ libvirtd_modular_daemon_drivers | product(libvirtd_modular_services) }}"
+  vars:
+    service_name: "{{ item[1].format(driver=item[0]) }}"
+  loop_control:
+    label: "{{ service_name }}"
