@@ -2,8 +2,12 @@
 # Based on ansible-lint config
 extends: default
 ignore: |
+  .ansible-lint
   .cache
+  .github
+  .poetry
   .tox
+  .travis.yml
 rules:
   braces:
     max-spaces-inside: 1

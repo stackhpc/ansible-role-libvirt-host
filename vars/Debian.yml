@@ -40,5 +40,10 @@ libvirt_host_packages_sasl:
   - libsasl2-modules-gssapi-mit
   - sasl2-bin
 
+# The user/group used to run the QEMU process. For security reasons,
+# Libvirt normally sets this to something other than root.
+libvirt_host_qemu_user: "libvirt-qemu"
+libvirt_host_qemu_group: "libvirt-qemu"
+
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules: []

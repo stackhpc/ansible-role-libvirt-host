@@ -29,6 +29,10 @@ libvirt_host_packages_efi_by_version:
   36: [] # fedora
   37: [] # fedora
   38: [] # fedora
+  39: [] # fedora
+  40: [] # fedora
+  41: [] # fedora
+  42: [] # fedora
 
 libvirt_host_packages_efi: >-
   {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
@@ -64,6 +68,10 @@ libvirt_host_custom_yum_repos_efi_by_version:
   36: [] # Fedora :-)
   37: [] # Fedora :-)
   38: [] # Fedora :-)
+  39: [] # fedora
+  40: [] # fedora
+  41: [] # fedora
+  42: [] # fedora
 
 libvirt_host_custom_yum_repos: >-
   {{ libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int] }}
