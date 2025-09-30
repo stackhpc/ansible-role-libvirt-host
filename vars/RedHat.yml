@@ -25,6 +25,8 @@ libvirt_host_packages_efi_by_version:
     - edk2-ovmf
   9:
     - edk2-ovmf
+  10:
+    - edk2-ovmf
 
 libvirt_host_packages_efi: >-
   {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
@@ -56,6 +58,7 @@ libvirt_host_custom_yum_repos_efi_by_version:
       gpgcheck: yes
   8: []
   9: []
+  10: []
 
 libvirt_host_custom_yum_repos: >-
   {{ libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int] }}
