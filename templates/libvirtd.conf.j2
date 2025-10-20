@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
-{% if libvirt_host_socket_dir | length > 0 %}
+{% if libvirt_host_socket_dir is truthy %}
 unix_sock_dir = "{{ libvirt_host_socket_dir }}"
 {% endif %}
 {% for key, value in libvirt_host_libvirtd_conf.items() %}

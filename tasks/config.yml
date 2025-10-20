@@ -9,7 +9,7 @@
     group: root
     mode: 0755
   become: true
-  when: libvirt_host_socket_dir | length > 0
+  when: libvirt_host_socket_dir is truthy
 
 - name: Process lineinfile rules
   lineinfile: "{{ rule.args }}"
