@@ -33,7 +33,7 @@
   when:
     - ansible_facts.os_family == "RedHat"
     - ansible_facts.distribution_major_version | int == 7
-    - libvirt_host_qemu_emulators | length > 0
+    - libvirt_host_qemu_emulators is truthy
 
 - name: Ensure QEMU emulator packages are installed
   package:
