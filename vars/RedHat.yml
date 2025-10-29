@@ -19,8 +19,8 @@ libvirt_host_libvirt_packages_client_default:
 # Packages that are only necessary if you require EFI support
 libvirt_host_packages_efi_by_version:
   7:
-    - edk2.git-ovmf-x64 # Official OVMF package doesn't boot (CentOS 7.5)
-    - qemu-kvm-ev # Need smm support for secure boot
+    - edk2.git-ovmf-x64  # Official OVMF package doesn't boot (CentOS 7.5)
+    - qemu-kvm-ev  # Need smm support for secure boot
   8:
     - edk2-ovmf
   9:
@@ -70,4 +70,4 @@ libvirt_host_lineinfile_extra_rules:
       insertafter: '^#LIBVIRTD_ARGS='
       regexp: '^LIBVIRTD_ARGS='
       line: LIBVIRTD_ARGS="{{ libvirt_host_libvirtd_args }}"
-    condition: "{{ libvirt_host_libvirtd_args != '' }}" 
+    condition: "{{ libvirt_host_libvirtd_args != '' }}"
