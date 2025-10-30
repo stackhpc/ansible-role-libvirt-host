@@ -2,9 +2,6 @@
 # List of package dependencies common to all Debian distributions
 libvirt_host_libvirt_packages_common:
   - qemu-system-x86
-  # - qemu-system-arm
-  # - qemu-system-misc
-  # - qemu-system-ppc
 
 # List of all daemon packages to install.
 libvirt_host_libvirt_packages_libvirt_daemon:
