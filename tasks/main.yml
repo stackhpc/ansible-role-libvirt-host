@@ -26,7 +26,7 @@
   when: libvirt_host_install_client | bool
 - name: Include pools.yml
   include_tasks: pools.yml
-  when: libvirt_host_pools | length > 0
+  when: libvirt_host_pools is truthy
 - name: Include networks.yml
   include_tasks: networks.yml
-  when: libvirt_host_networks | length > 0
+  when: libvirt_host_networks is truthy

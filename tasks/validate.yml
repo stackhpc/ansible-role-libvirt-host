@@ -35,4 +35,4 @@
       defined
   when:
     - libvirt_host_enable_sasl_support | bool
-    - libvirt_host_sasl_credentials | rejectattr('password') | length > 0
+    - libvirt_host_sasl_credentials | rejectattr('password') is truthy
