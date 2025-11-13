@@ -9,7 +9,7 @@
     group: root
     mode: 0755
   become: true
-  when: libvirt_host_socket_dir | length > 0
+  when: libvirt_host_socket_dir is truthy
 
 - name: Process lineinfile rules
   lineinfile: "{{ rule.args }}"
@@ -56,8 +56,7 @@
   become: true
   loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
   when:
-    - item.listen_address is not none
-    - item.listen_address | length > 0
+    - item.listen_address is truthy
   loop_control:
     label: "{{ item.service }}"
   vars:
@@ -73,8 +72,7 @@
   become: true
   loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
   when:
-    - item.listen_address is not none
-    - item.listen_address | length > 0
+    - item.listen_address is truthy
   loop_control:
     label: "{{ item.service }}"
   vars:
