@@ -162,3 +162,27 @@ libvirt_host_vnc_tls_enabled: false
 
 # Whether to configure AppArmor for directory storage pools.
 libvirt_host_configure_apparmor: "{{ libvirt_host_install_daemon | bool }}"
+
+# Whether to disable and mask libvirt modular systemd units
+# See: https://libvirt.org/daemons.html
+libvirt_disable_modular_systemd_units: true
+
+# A list of libvirt modular daemon drivers
+libvirtd_modular_daemon_drivers:
+  - qemu
+  - interface
+  - network
+  - nodedev
+  - nwfilter
+  - proxy
+  - secret
+  - storage
+
+# A list of libvirt modular systemd services.
+# The {driver} replacement string is populated
+# from libvirtd_modular_daemon_drivers.
+libvirtd_modular_services:
+  - virt{driver}d.service
+  - virt{driver}d.socket
+  - virt{driver}d-ro.socket
+  - virt{driver}d-admin.socket
