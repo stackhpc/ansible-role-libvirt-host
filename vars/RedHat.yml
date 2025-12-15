@@ -33,6 +33,7 @@ libvirt_host_packages_efi_by_version:
   40: [] # fedora
   41: [] # fedora
   42: [] # fedora
+  43: [] # fedora
 
 libvirt_host_packages_efi: >-
   {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}

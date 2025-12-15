@@ -40,27 +40,27 @@ libvirt_host_var_prefix: ""
 
 # Where the Unix Domain sockets are stored
 libvirt_host_socket_dir: >-
-  {%- if libvirt_host_var_prefix -%}
+  {%- if libvirt_host_var_prefix is truthy -%}
   /var/run/{{ libvirt_host_var_prefix }}
   {%- endif -%}
 
 # Path to PID file which prevents mulitple instances of the daemon from
 # spawning
 libvirt_host_pid_path: >-
-  {%- if libvirt_host_var_prefix -%}
+  {%- if libvirt_host_var_prefix is truthy -%}
   /var/run/{{ libvirt_host_var_prefix }}.pid
   {%- endif -%}
 
 # Command line arguments passed to libvirtd by the init system when
 # libvirtd is started - quotes will be added
 libvirt_host_libvirtd_args: >-
-  {%- if libvirt_host_pid_path -%}
+  {%- if libvirt_host_pid_path is truthy -%}
   -p {{ libvirt_host_pid_path }}
   {%- endif %}
 
 # The libvirt connnection URI
 libvirt_host_uri: >-
-  {%- if libvirt_host_socket_dir -%}
+  {%- if libvirt_host_socket_dir is truthy -%}
   qemu+unix:///system?socket={{ libvirt_host_socket_dir }}/libvirt-sock
   {%- endif %}
 
