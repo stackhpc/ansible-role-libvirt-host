@@ -111,7 +111,7 @@
   loop: "{{ _libvirt_tls_certs.keys() }}"
   when:
     - libvirt_host_tls_listen | bool
-    - _libvirt_loop_item.content
+    - _libvirt_loop_item.content | length > 0
   vars:
     _libvirt_loop_item: "{{ _libvirt_tls_certs[item] }}"
   notify: restart libvirt
@@ -159,7 +159,7 @@
   loop: "{{ _libvirt_host_qemu_tls_certs.keys() }}"
   when:
     - libvirt_host_qemu_tls_enabled | bool
-    - _libvirt_host_qemu_loop_item.content
+    - _libvirt_host_qemu_loop_item.content | length > 0
   vars:
     _libvirt_host_qemu_loop_item: "{{ _libvirt_host_qemu_tls_certs[item] }}"
   notify: restart libvirt
@@ -194,7 +194,7 @@
   loop: "{{ _libvirt_host_vnc_tls_certs.keys() }}"
   when:
     - libvirt_host_vnc_tls_enabled | bool
-    - _libvirt_host_vnc_loop_item.content
+    - _libvirt_host_vnc_loop_item.content | length > 0
   vars:
     _libvirt_host_vnc_loop_item: "{{ _libvirt_host_vnc_tls_certs[item] }}"
   notify: restart libvirt
