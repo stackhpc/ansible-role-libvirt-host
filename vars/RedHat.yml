@@ -28,8 +28,11 @@ libvirt_host_packages_efi_by_version:
   10:
     - edk2-ovmf
 
+libvirt_host_packages_efi_aarch64: >-
+  {{ [] if ansible_facts.distribution_major_version | int == 7 else ['edk2-aarch64'] }}
+
 libvirt_host_packages_efi: >-
-  {{ libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
+  {{ libvirt_host_packages_efi_aarch64 if libvirt_host_arch == 'aarch64' else libvirt_host_packages_efi_by_version[ansible_facts.distribution_major_version | int] }}
 
 # Packages for RBD volume pool support
 libvirt_host_packages_rbd_volume_pool:
@@ -61,7 +64,10 @@ libvirt_host_custom_yum_repos_efi_by_version:
   10: []
 
 libvirt_host_custom_yum_repos: >-
-  {{ libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int] }}
+  {{
+    [] if libvirt_host_arch == 'aarch64'
+    else libvirt_host_custom_yum_repos_efi_by_version[ansible_facts.distribution_major_version | int]
+  }}
 
 # These are passed to the lineinfile module to customize configuration files
 libvirt_host_lineinfile_extra_rules:
