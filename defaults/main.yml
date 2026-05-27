@@ -25,6 +25,9 @@ libvirt_host_networks: []
 # be available in certain environments.
 libvirt_host_require_vt: true
 
+# Architecture of the libvirt host.
+libvirt_host_arch: "{{ ansible_facts.architecture }}"
+
 # List of architectures for which to install QEMU system emulators, e.g. x86.
 libvirt_host_qemu_emulators: "{{ [] if libvirt_host_require_vt | bool else ['x86'] }}"
 

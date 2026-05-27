@@ -1,7 +1,7 @@
 ---
 # List of package dependencies common to all Debian distributions
 libvirt_host_libvirt_packages_common:
-  - qemu-system-x86
+  - "{{ 'qemu-system-arm' if libvirt_host_arch == 'aarch64' else 'qemu-system-x86' }}"
 
 # List of all daemon packages to install.
 libvirt_host_libvirt_packages_libvirt_daemon:
@@ -28,7 +28,7 @@ libvirt_host_libvirt_packages_client_default:
 
 # Packages that are only necessary if you require EFI support
 libvirt_host_packages_efi:
-  - ovmf
+  - "{{ 'qemu-efi-aarch64' if libvirt_host_arch == 'aarch64' else 'ovmf' }}"
 
 # Packages for RBD volume pool support
 libvirt_host_packages_rbd_volume_pool:
