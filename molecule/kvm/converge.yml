@@ -9,12 +9,11 @@
           - /dev/vdb
         create: true
         lvmetanames:
-          lvmetanames:
-            - lvname: thinpool
-              size: 40%VG
-              opts: "--wipesignatures y"
-              create: true
-              filesystem: xfs
+          - lvname: thinpool
+            size: 40%VG
+            opts: "--wipesignatures y"
+            create: true
+            filesystem: xfs
     users_group_list2:
       - name: libvirt
     systemusers_user_list:
