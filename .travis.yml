@@ -4,7 +4,7 @@ dist: noble
 
 language: python
 python:
-  - "3.11"
+  - "3.13"
 addons:
   apt:
     sources:
@@ -16,11 +16,16 @@ addons:
       - dnsmasq-base
       - ebtables
       - virtinst
-      - libvirt-dev
-      - libvirt-daemon-system
       - qemu-kvm
       - qemu-utils
+      - libvirt-dev
+      - libvirt-daemon-system
+      - libguestfs-tools
+      - libxslt-dev
+      - libxml2-dev
+      - zlib1g-dev
       - ruby-dev
+      - ruby-fog-libvirt
       - ca-certificates
       - curl
       - gcc
@@ -32,12 +37,14 @@ install:
 #  - wget https://releases.hashicorp.com/vagrant/$VAGRANT_VER/vagrant_"$VAGRANT_VER"_x86_64.deb
 #  - sudo apt -y install ./vagrant_"$VAGRANT_VER"_x86_64.deb
   - vagrant plugin install vagrant-libvirt
-  - pip install wheel pyopenssl tox
+  - pip install wheel pyopenssl tox ansible
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
   - sh configure
 
 script:
   - mv ../ansible-role-libvirt-host ../tcharl.ansible_role_libvirt_host
+  - ansible-galaxy role install -r requirements-standalone.yml
+  - ansible-galaxy collection install -r requirements-collections.yml
   - travis_wait 30 tox -e test-exec -- --scenario-name kvm
 branches:
   only:
