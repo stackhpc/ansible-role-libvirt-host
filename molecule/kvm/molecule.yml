@@ -11,7 +11,8 @@ driver:
     name: libvirt
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: ${TESTBOX:-generic/fedora39}
+    box: ${TESTBOX:-fedora-cloud-44-libvirt}
+    box_url: ${TESTBOX_URL:-https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Vagrant-libvirt-44-1.7.x86_64.vagrant.libvirt.box}
     provider_options:
       driver: "kvm"
       cpus: 2

@@ -1,6 +1,8 @@
 ---
 - name: Converge
   hosts: all
+  environment:
+    LVM_SUPPRESS_FD_WARNINGS: "1"
   vars:
     manage_lvm: true
     lvm_groups:
