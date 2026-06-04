@@ -4,3 +4,4 @@ roles:
   - name: mrlesmithjr.manage_lvm
   - name: robertdebock.epel
   - name: robertdebock.bootstrap
+  - name: tcharl.ansible_volumes

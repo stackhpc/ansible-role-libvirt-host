@@ -1,6 +1,6 @@
 ---
 
-dist: jammy
+dist: noble
 
 language: python
 python:

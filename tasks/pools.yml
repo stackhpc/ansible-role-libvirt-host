@@ -1,7 +1,7 @@
 ---
 - name: Include lvm role to create VG
-  ansible.builtin.include_role:
-    name: mrlesmithjr.manage_lvm
+  ansible.builtin.import_role:
+    name: tcharl.ansible_volumes
   when:
     - manage_lvm is defined
     - manage_lvm

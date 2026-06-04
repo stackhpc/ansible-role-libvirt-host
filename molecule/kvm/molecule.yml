@@ -11,7 +11,7 @@ driver:
     name: libvirt
 platforms:
   - name: Fedora-Molecule-libvirt-host
-    box: ${TESTBOX:-fedora/39-cloud-base}
+    box: ${TESTBOX:-generic/fedora39}
     provider_options:
       driver: "kvm"
       cpus: 2
@@ -20,12 +20,17 @@ platforms:
       - "storage :file, :size => '1G', :device => 'vdb'"
 provisioner:
   name: ansible
+  env:
+    ANSIBLE_COLLECTIONS_PATH: "${MOLECULE_PROJECT_DIRECTORY}/../community-collections:${HOME}/.ansible/collections:/usr/share/ansible/collections"
+  options:
+    vvv: True
   config_options:
     defaults:
       forks: 20
+      remote_tmp: /tmp
     ssh_connection:
       pipelining: true
-      ssh_args: -o ControlMaster=auto -o ControlPersist=600s
+      ssh_args: -4 -o ControlMaster=auto -o ControlPersist=600s
 verifier:
   name: testinfra
   env:
