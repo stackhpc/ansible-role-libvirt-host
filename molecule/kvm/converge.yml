@@ -8,6 +8,7 @@
         disks:
           - /dev/vdb
         create: true
+        lvmetanames: []
     users_group_list2:
       - name: libvirt
     systemusers_user_list:
