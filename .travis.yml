@@ -32,7 +32,7 @@ install:
 #  - wget https://releases.hashicorp.com/vagrant/$VAGRANT_VER/vagrant_"$VAGRANT_VER"_x86_64.deb
 #  - sudo apt -y install ./vagrant_"$VAGRANT_VER"_x86_64.deb
   - vagrant plugin install vagrant-libvirt
-  - pip install wheel pyopenssl tox
+  - pip install wheel pyopenssl tox ansible
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
   - sh configure
 
