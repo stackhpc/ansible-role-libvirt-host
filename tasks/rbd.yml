@@ -14,7 +14,7 @@
 
 - name: Send Ceph secret
   ansible.builtin.template:
-    mode: 0640
+    mode: "0640"
     src: ceph_secret.xml.j2
     dest: "{{ secret_tempfile.path }}"
 

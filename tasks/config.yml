@@ -7,7 +7,7 @@
     path: "{{ libvirt_host_socket_dir }}"
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   become: true
   when: libvirt_host_socket_dir is truthy
 
@@ -27,7 +27,7 @@
     dest: "{{ item.dest }}"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true
   loop: "{{ _libvirt_config_files | selectattr('enabled') }}"
   loop_control:
@@ -52,7 +52,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
   become: true
   loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
   when:
@@ -68,7 +68,7 @@
     dest: "/etc/systemd/system/{{ item.service }}.d/listen-address.conf"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   become: true
   loop: "{{ _libvirt_socket_services | selectattr('enabled') }}"
   when:
@@ -87,7 +87,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0700
+    mode: "0700"
   become: true
   loop: >-
     {{ _libvirt_tls_certs.values() |
@@ -130,12 +130,12 @@
   when: libvirt_host_enable_sasl_support | bool
 
 - name: Create directory for QEMU TLS certificates and keys
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ libvirt_host_qemu_user }}"
     group: "{{ libvirt_host_qemu_group }}"
-    mode: 0700
+    mode: "0700"
   become: true
   loop: >-
     {{ _libvirt_host_qemu_tls_certs.values() |
@@ -147,7 +147,7 @@
     - libvirt_host_qemu_tls_enabled | bool
 
 - name: Copy QEMU TLS certificates and keys
-  copy:
+  ansible.builtin.copy:
     content: "{{ _libvirt_host_qemu_loop_item.content }}"
     dest: "{{ _libvirt_host_qemu_loop_item.dest }}"
     owner: "{{ libvirt_host_qemu_user }}"
@@ -165,12 +165,12 @@
   notify: restart libvirt
 
 - name: Create directory for Libvirt VNC TLS certificates and keys
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ libvirt_host_qemu_user }}"
     group: "{{ libvirt_host_qemu_group }}"
-    mode: 0700
+    mode: "0700"
   become: true
   loop: >-
     {{ _libvirt_host_vnc_tls_certs.values() |
@@ -182,7 +182,7 @@
     - libvirt_host_vnc_tls_enabled | bool
 
 - name: Copy Libvirt VNC TLS certificates and keys
-  copy:
+  ansible.builtin.copy:
     content: "{{ _libvirt_host_vnc_loop_item.content }}"
     dest: "{{ _libvirt_host_vnc_loop_item.dest }}"
     owner: "{{ libvirt_host_qemu_user }}"
