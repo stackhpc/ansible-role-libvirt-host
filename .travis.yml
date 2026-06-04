@@ -4,7 +4,7 @@ dist: noble
 
 language: python
 python:
-  - "3.13"
+  - "3.11"
 addons:
   apt:
     sources:
@@ -16,16 +16,11 @@ addons:
       - dnsmasq-base
       - ebtables
       - virtinst
-      - qemu-kvm
-      - qemu-utils
       - libvirt-dev
       - libvirt-daemon-system
-      - libguestfs-tools
-      - libxslt-dev
-      - libxml2-dev
-      - zlib1g-dev
+      - qemu-kvm
+      - qemu-utils
       - ruby-dev
-      - ruby-fog-libvirt
       - ca-certificates
       - curl
       - gcc
@@ -37,7 +32,7 @@ install:
 #  - wget https://releases.hashicorp.com/vagrant/$VAGRANT_VER/vagrant_"$VAGRANT_VER"_x86_64.deb
 #  - sudo apt -y install ./vagrant_"$VAGRANT_VER"_x86_64.deb
   - vagrant plugin install vagrant-libvirt
-  - pip install wheel pyopenssl tox ansible
+  - pip install wheel pyopenssl tox
   - sudo chmod o+rwx /var/run/libvirt/libvirt-sock
   - sh configure
 
