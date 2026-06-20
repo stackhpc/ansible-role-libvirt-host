@@ -20,6 +20,9 @@
     state: "{{ item.enabled | bool | ternary('started', 'stopped') }}"
   become: true
   loop: "{{ _libvirt_socket_services }}"
+  when:
+    - item.listen_address is not none
+    - item.listen_address | length > 0
   loop_control:
     label: "{{ item.service }}"
   listen:
